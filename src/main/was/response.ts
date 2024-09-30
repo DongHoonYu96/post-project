@@ -1,5 +1,5 @@
 import { Socket } from 'net';
-import { statusCode } from './const/httpConsts';
+import { statusCode, HTTP_VERSIONS } from './const/httpConsts';
 
 type StatusCode = keyof typeof statusCode;
 type Headers = { [key: string]: string };
@@ -55,7 +55,7 @@ class Response {
     }
 
     private writeHead(): void {
-        this.socket.write(`HTTP/1.1 ${this.statusCode} ${this.statusMessage}\r\n`);
+        this.socket.write(`${HTTP_VERSIONS.HTTP_1_1} ${this.statusCode} ${this.statusMessage}\r\n`);
         Object.entries(this.headers).forEach(([key, value]) => {
             this.socket.write(`${key}: ${value}\r\n`);
         });
