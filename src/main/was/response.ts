@@ -30,6 +30,11 @@ class Response {
         return this;
     }
 
+    public setCacheControl(value: string): this {
+        this.header('Cache-Control', `public, max-age=${value}`);
+        return this;
+    }
+
     public render(data: string | Buffer, mimeType?: string): void {
         if (mimeType) {
             this.header('Content-Type', mimeType);

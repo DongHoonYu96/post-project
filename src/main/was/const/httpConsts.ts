@@ -2,6 +2,15 @@
 
 export const CRLF = '\r\n';
 
+export const cachePolicy = {
+    'html': 'no-cache',
+    'css': '86400',
+    'js': '86400',
+    'png': '604800',
+    'jpg': '604800',
+} as const;
+
+
 export const HTTP_METHODS = {
     GET: 'GET',
     POST: 'POST',
@@ -48,9 +57,10 @@ export const COMMON_HEADERS = {
 export const statusCode = {
     200: 'OK',
     201: 'CREATED',
-    400: 'BAD_REQUEST',
+    304: 'NOT Modified',
+    400: 'BAD REQUEST',
     401: 'UNAUTHORIZED',
     403: 'FORBIDDEN',
-    404: 'NOT_FOUND',
-    500: 'INTERNAL_SERVER_ERROR',
+    404: 'NOT FOUND',
+    500: 'INTERNAL SERVER ERROR',
 } as const;

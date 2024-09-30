@@ -3,9 +3,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Request } from './request';
 import { Response } from './response';
-import { CRLF } from './const/httpConsts';
+import {cachePolicy, CRLF} from './const/httpConsts';
 import { COMMON_MIME_TYPES } from './const/httpConsts';
-import { Router } from './router'; // 라우터 타입을 위해 추가
+import { Router } from './router';
+import {createHash} from "node:crypto"; // 라우터 타입을 위해 추가
+import { stat } from 'fs/promises';
 
 interface ServerOptions {
     staticDirectory?: string;
@@ -76,11 +78,10 @@ class Server {
                 const fileStats = await fs.promises.stat(filePath);
 
                 if (fileStats.isFile()) {
-                    await this.sendFile(filePath, res);
+                    await this.sendFile(filePath, req, res);
                     return;
                 }
             }
-
             if (!this.router) {
                 throw new Error('No router configured');
             }
@@ -92,12 +93,32 @@ class Server {
         }
     }
 
-    private async sendFile(filePath: string, res: Response): Promise<void> {
+    private async sendFile(filePath: string, req : Request,  res: Response): Promise<void> {
         try {
+            const stats = await stat(filePath);
             const file = await fs.promises.readFile(filePath);
             const ext = path.extname(filePath).slice(1);
             const mimeType = COMMON_MIME_TYPES[ext] || 'application/octet-stream';
-            res.render(file, mimeType);
+            const maxAge = cachePolicy[ext] || 'public, max-age=3600';
+            res.setCacheControl(maxAge)
+
+            // ETag 생성
+            const etag : string = createHash('md5').update(file).digest('hex');
+
+            // Cache-Control, ETag, Last-Modified 설정
+            res.header('ETag', `${etag}`)
+                .header('Last-Modified', stats.mtime.toUTCString());
+
+            // 조건부 요청 처리
+            if (req.headers.get('if-none-match') === etag) {
+                res.header('Content-Type', mimeType).status(304).send();
+                return;
+            }
+
+            // 내용이 바뀐경우에만, 새로운 body를 보내준다.
+            res.render(file,mimeType);
+
+
         } catch (error) {
             console.error('File read error:', error);
             res.status(404).send('File Not Found');

@@ -18,7 +18,7 @@ async function main() {
         try {
             const indexPath = path.join(staticDir, 'index.html');
             const content = await fs.readFile(indexPath);
-            res.render(content, COMMON_MIME_TYPES.html);
+            res.setCacheControl('60').render(content, COMMON_MIME_TYPES.html);
         } catch (error) {
             console.error('Error serving index.html:', error);
             res.status(500).send('Internal Server Error');
