@@ -9,7 +9,7 @@ import {Request} from "../was/request";
 type StatusCode = keyof typeof statusCode;
 type Headers = { [key: string]: string };
 
-class Response {
+export class Response {
     private socket: Socket;
     private headers: Headers;
     private statusCode: StatusCode;
@@ -70,7 +70,6 @@ class Response {
             // 내용이 바뀐경우에만, 새로운 body를 보내준다.
             res.render(file,mimeType);
 
-
         } catch (error) {
             console.error('File read error:', error);
             res.status(404).send('File Not Found');
@@ -120,5 +119,3 @@ class Response {
         return Buffer.isBuffer(this.body) ? 'application/octet-stream' : 'text/plain';
     }
 }
-
-export { Response };

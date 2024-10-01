@@ -9,6 +9,7 @@ import { Router } from './router';
 import {createHash} from "node:crypto"; // 라우터 타입을 위해 추가
 import { stat } from 'fs/promises';
 import {FrontControllerServletV1} from "../frontcontroller/v1/FrontControllerServletV1";
+import {FrontControllerServletV2} from "../frontcontroller/v2/FrontControllerServletV2";
 
 /**
  * Represents an HTTP request handler function.
@@ -156,6 +157,12 @@ class Server {
         const frontControllerServletV1 = new FrontControllerServletV1();
         if(req.path.startsWith("/front-controller/v1"))
             frontControllerServletV1.service(req,res);
+
+        const frontControllerServletV2 = new FrontControllerServletV2();
+        if(req.path.startsWith("/front-controller/v2"))
+            frontControllerServletV2.service(req,res);
+
+
     }
 
     private async sendFile(filePath: string, req : Request,  res: Response): Promise<void> {

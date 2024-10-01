@@ -1,0 +1,13 @@
+<h1><%= title %></h1>
+
+<% if (members && members.length > 0) { %>
+    <ul>
+        <% members.forEach(function(member) { %>
+            <li>
+                <%= member.name %> (ID: <%= member.loginId %>)
+            </li>
+        <% }); %>
+    </ul>
+<% } else { %>
+    <p>등록된 회원이 없습니다.</p>
+<% } %>
