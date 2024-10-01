@@ -9,6 +9,21 @@ import { Router } from './router';
 import {createHash} from "node:crypto"; // 라우터 타입을 위해 추가
 import { stat } from 'fs/promises';
 
+/**
+ * Represents an HTTP request handler function.
+ */
+type RequestHandler = (req: Request, res: Response, next: (err?: Error) => void) => void;
+
+/**
+ * Represents an error handling middleware function.
+ */
+type ErrorHandler = (err: Error, req: Request, res: Response, next: (err?: Error) => void) => void;
+
+/**
+ * Represents a middleware function, which can be either a RequestHandler or an ErrorHandler.
+ */
+type Middleware = RequestHandler | ErrorHandler;
+
 interface ServerOptions {
     staticDirectory?: string;
 }
@@ -17,10 +32,64 @@ class Server {
     private server: net.Server;
     private router?: Router;
     private staticDirectory?: string;
+    private middlewares: Middleware[] = [];
 
     constructor(options: ServerOptions = {}) {
         this.server = net.createServer(socket => this.handleSocket(socket));
         this.staticDirectory = options.staticDirectory;
+    }
+    /**
+     * Handles incoming HTTP requests by running them through the middleware chain.
+     * @param req - The incoming HTTP request.
+     * @param res - The HTTP response object.
+     */
+
+    /**
+     * Recursively runs through the middleware chain.
+     * @param middlewares - The array of middleware functions.
+     * @param index - The current index in the middleware array.
+     * @param err - An error object, if any.
+     * @param req - The incoming HTTP request.
+     * @param res - The HTTP response object.
+     */
+    private runMiddleware(
+        middlewares: Middleware[],
+        index: number,
+        err: Error | null,
+        req: Request,
+        res: Response,
+    ): void {
+        if (index < 0 || index >= middlewares.length) return;
+
+        const nextMiddleware = middlewares[index];
+        const next = (e?: Error) => this.runMiddleware(middlewares, index + 1, e || null, req, res);
+
+        if (err) {
+            if (this.isErrorHandler(nextMiddleware)) {
+                (nextMiddleware as ErrorHandler)(err, req, res, next);
+            } else {
+                this.runMiddleware(middlewares, index + 1, err, req, res);
+            }
+        } else {
+            (nextMiddleware as RequestHandler)(req, res, next);
+        }
+    }
+
+    /**
+     * Checks if a middleware function is an error handler.
+     * @param middleware - The middleware function to check.
+     * @returns True if the middleware is an error handler, false otherwise.
+     */
+    private isErrorHandler(middleware: Middleware): middleware is ErrorHandler {
+        return middleware.length === 4;
+    }
+
+    /**
+     * Adds a middleware function to the application.
+     * @param middleware - The middleware function to add.
+     */
+    public use(middleware: Middleware): void {
+        this.middlewares.push(middleware);
     }
 
     private handleSocket(socket: net.Socket): void {
@@ -72,6 +141,8 @@ class Server {
         const req = new Request(headers, body);
         const res = new Response(socket);
 
+        this.runMiddleware(this.middlewares, 0, null, req, res);
+
         try {
             if (this.staticDirectory) {
                 const filePath = path.join(this.staticDirectory, req.path);
@@ -82,11 +153,11 @@ class Server {
                     return;
                 }
             }
-            if (!this.router) {
-                throw new Error('No router configured');
-            }
-
-            await this.router.handle(req, res);
+            // if (!this.router) {
+            //     throw new Error('No router configured');
+            // }
+            //
+            // await this.router.handle(req, res);
         } catch (error) {
             console.error('Request handling error:', error);
             res.status(500).send('Internal Server Error');
@@ -124,10 +195,10 @@ class Server {
             res.status(404).send('File Not Found');
         }
     }
-
-    public use(router: Router): void {
-        this.router = router;
-    }
+    //
+    // public use(router: Router): void {
+    //     this.router = router;
+    // }
 
     public static(directory: string): void {
         this.staticDirectory = directory;

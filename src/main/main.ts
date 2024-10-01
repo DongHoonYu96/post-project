@@ -5,6 +5,7 @@ import { Router } from './was/router';
 import { Request } from './was/request';
 import { Response } from './was/response';
 import { COMMON_MIME_TYPES } from './was/const/httpConsts';
+import {error404, logger} from "./middlewares/middlewares";
 
 async function main() {
     const app = new Server();
@@ -12,7 +13,7 @@ async function main() {
 
     const staticDir = path.join(__dirname, 'views');
     app.static(staticDir);
-    app.use(router);
+    app.use(logger);
 
     router.get('/', async (req: Request, res: Response) => {
         try {
