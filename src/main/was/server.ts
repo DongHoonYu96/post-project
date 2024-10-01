@@ -8,6 +8,23 @@ import { COMMON_MIME_TYPES } from './const/httpConsts';
 import { Router } from './router';
 import {createHash} from "node:crypto"; // 라우터 타입을 위해 추가
 import { stat } from 'fs/promises';
+import {FrontControllerServletV1} from "../frontcontroller/v1/FrontControllerServletV1";
+import {FrontControllerServletV2} from "../frontcontroller/v2/FrontControllerServletV2";
+
+/**
+ * Represents an HTTP request handler function.
+ */
+type RequestHandler = (req: Request, res: Response, next: (err?: Error) => void) => void;
+
+/**
+ * Represents an error handling middleware function.
+ */
+type ErrorHandler = (err: Error, req: Request, res: Response, next: (err?: Error) => void) => void;
+
+/**
+ * Represents a middleware function, which can be either a RequestHandler or an ErrorHandler.
+ */
+type Middleware = RequestHandler | ErrorHandler;
 
 interface ServerOptions {
     staticDirectory?: string;
@@ -17,10 +34,73 @@ class Server {
     private server: net.Server;
     private router?: Router;
     private staticDirectory?: string;
+    private middlewares: Middleware[] = [];
 
     constructor(options: ServerOptions = {}) {
         this.server = net.createServer(socket => this.handleSocket(socket));
         this.staticDirectory = options.staticDirectory;
+    }
+    /**
+     * Handles incoming HTTP requests by running them through the middleware chain.
+     * @param req - The incoming HTTP request.
+     * @param res - The HTTP response object.
+     */
+
+    /**
+     * Recursively runs through the middleware chain.
+     * @param middlewares - The array of middleware functions.
+     * @param index - The current index in the middleware array.
+     * @param err - An error object, if any.
+     * @param req - The incoming HTTP request.
+     * @param res - The HTTP response object.
+     */
+    private runMiddleware(
+        middlewares: Middleware[],
+        index: number,
+        err: Error | null,
+        req: Request,
+        res: Response,
+    ): void {
+        if (index < 0 || index >= middlewares.length) return;
+
+        const nextMiddleware = middlewares[index];
+        const next = (e?: Error) => this.runMiddleware(middlewares, index + 1, e || null, req, res);
+
+        if (err) {
+            // 에러가 있고, 다음에 실행할 미들웨어가 에러 처리기인경우 에러처리 미들웨어 실행
+            if (this.isErrorHandler(nextMiddleware)) {
+                (nextMiddleware as ErrorHandler)(err, req, res, next);
+            } else {
+                // 에러가 있고, 다음에 실행할 미들웨어가 에러 처리기가 아니면 그 다음 미들웨어를 찾는다
+                this.runMiddleware(middlewares, index + 1, err, req, res);
+            }
+        } else {
+            /**
+             * as로 타입강제지정, 등록된 함수 실행
+             * 아래코드와 같은기능
+             * if (this.isRequestHandler(nextMiddleware)) {
+             *     nextMiddleware(req, res, next);
+             */
+            (nextMiddleware as RequestHandler)(req, res, next);
+
+        }
+    }
+
+    /**
+     * Checks if a middleware function is an error handler.
+     * @param middleware - The middleware function to check.
+     * @returns True if the middleware is an error handler, false otherwise.
+     */
+    private isErrorHandler(middleware: Middleware): middleware is ErrorHandler {
+        return middleware.length === 4;
+    }
+
+    /**
+     * Adds a middleware function to the application.
+     * @param middleware - The middleware function to add.
+     */
+    public use(middleware: Middleware): void {
+        this.middlewares.push(middleware);
     }
 
     private handleSocket(socket: net.Socket): void {
@@ -72,25 +152,17 @@ class Server {
         const req = new Request(headers, body);
         const res = new Response(socket);
 
-        try {
-            if (this.staticDirectory) {
-                const filePath = path.join(this.staticDirectory, req.path);
-                const fileStats = await fs.promises.stat(filePath);
+        this.runMiddleware(this.middlewares, 0, null, req, res);
 
-                if (fileStats.isFile()) {
-                    await this.sendFile(filePath, req, res);
-                    return;
-                }
-            }
-            if (!this.router) {
-                throw new Error('No router configured');
-            }
+        const frontControllerServletV1 = new FrontControllerServletV1();
+        if(req.path.startsWith("/front-controller/v1"))
+            frontControllerServletV1.service(req,res);
 
-            await this.router.handle(req, res);
-        } catch (error) {
-            console.error('Request handling error:', error);
-            res.status(500).send('Internal Server Error');
-        }
+        const frontControllerServletV2 = new FrontControllerServletV2();
+        if(req.path.startsWith("/front-controller/v2"))
+            frontControllerServletV2.service(req,res);
+
+
     }
 
     private async sendFile(filePath: string, req : Request,  res: Response): Promise<void> {
@@ -100,7 +172,7 @@ class Server {
             const ext = path.extname(filePath).slice(1);
             const mimeType = COMMON_MIME_TYPES[ext] || 'application/octet-stream';
             const maxAge = cachePolicy[ext] || 'public, max-age=3600';
-            res.setCacheControl(maxAge)
+            res.setCacheControl(maxAge);
 
             // ETag 생성
             const etag : string = createHash('md5').update(file).digest('hex');
@@ -124,10 +196,10 @@ class Server {
             res.status(404).send('File Not Found');
         }
     }
-
-    public use(router: Router): void {
-        this.router = router;
-    }
+    //
+    // public use(router: Router): void {
+    //     this.router = router;
+    // }
 
     public static(directory: string): void {
         this.staticDirectory = directory;
