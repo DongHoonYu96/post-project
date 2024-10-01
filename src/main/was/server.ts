@@ -8,6 +8,7 @@ import { COMMON_MIME_TYPES } from './const/httpConsts';
 import { Router } from './router';
 import {createHash} from "node:crypto"; // 라우터 타입을 위해 추가
 import { stat } from 'fs/promises';
+import {FrontControllerServletV1} from "../frontcontroller/v1/FrontControllerServletV1";
 
 /**
  * Represents an HTTP request handler function.
@@ -152,25 +153,9 @@ class Server {
 
         this.runMiddleware(this.middlewares, 0, null, req, res);
 
-        try {
-            if (this.staticDirectory) {
-                const filePath = path.join(this.staticDirectory, req.path);
-                const fileStats = await fs.promises.stat(filePath);
-
-                if (fileStats.isFile()) {
-                    await this.sendFile(filePath, req, res);
-                    return;
-                }
-            }
-            // if (!this.router) {
-            //     throw new Error('No router configured');
-            // }
-            //
-            // await this.router.handle(req, res);
-        } catch (error) {
-            console.error('Request handling error:', error);
-            res.status(500).send('Internal Server Error');
-        }
+        const frontControllerServletV1 = new FrontControllerServletV1();
+        if(req.path.startsWith("/front-controller/v1"))
+            frontControllerServletV1.service(req,res);
     }
 
     private async sendFile(filePath: string, req : Request,  res: Response): Promise<void> {
@@ -180,7 +165,7 @@ class Server {
             const ext = path.extname(filePath).slice(1);
             const mimeType = COMMON_MIME_TYPES[ext] || 'application/octet-stream';
             const maxAge = cachePolicy[ext] || 'public, max-age=3600';
-            res.setCacheControl(maxAge)
+            res.setCacheControl(maxAge);
 
             // ETag 생성
             const etag : string = createHash('md5').update(file).digest('hex');

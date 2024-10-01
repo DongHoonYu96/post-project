@@ -6,25 +6,13 @@ import { Request } from './was/request';
 import { Response } from './was/response';
 import { COMMON_MIME_TYPES } from './was/const/httpConsts';
 import {logger} from "./middlewares/logger";
+import {staticServe} from "./middlewares/middlewares";
 
 async function main() {
     const app = new Server();
-    const router = new Router();
 
-    const staticDir = path.join(__dirname, 'views');
-    app.static(staticDir);
     app.use(logger);
-
-    router.get('/', async (req: Request, res: Response) => {
-        try {
-            const indexPath = path.join(staticDir, 'index.html');
-            const content = await fs.readFile(indexPath);
-            res.setCacheControl('60').render(content, COMMON_MIME_TYPES.html);
-        } catch (error) {
-            console.error('Error serving index.html:', error);
-            res.status(500).send('Internal Server Error');
-        }
-    });
+    app.use(staticServe);
 
     const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
