@@ -5,7 +5,7 @@ import { Router } from './was/router';
 import { Request } from './was/request';
 import { Response } from './was/response';
 import { COMMON_MIME_TYPES } from './was/const/httpConsts';
-import {error404, logger} from "./middlewares/middlewares";
+import {logger} from "./middlewares/logger";
 
 async function main() {
     const app = new Server();

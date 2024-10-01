@@ -65,13 +65,22 @@ class Server {
         const next = (e?: Error) => this.runMiddleware(middlewares, index + 1, e || null, req, res);
 
         if (err) {
+            // 에러가 있고, 다음에 실행할 미들웨어가 에러 처리기인경우 에러처리 미들웨어 실행
             if (this.isErrorHandler(nextMiddleware)) {
                 (nextMiddleware as ErrorHandler)(err, req, res, next);
             } else {
+                // 에러가 있고, 다음에 실행할 미들웨어가 에러 처리기가 아니면 그 다음 미들웨어를 찾는다
                 this.runMiddleware(middlewares, index + 1, err, req, res);
             }
         } else {
+            /**
+             * as로 타입강제지정, 등록된 함수 실행
+             * 아래코드와 같은기능
+             * if (this.isRequestHandler(nextMiddleware)) {
+             *     nextMiddleware(req, res, next);
+             */
             (nextMiddleware as RequestHandler)(req, res, next);
+
         }
     }
 
