@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원 목록</title>
+    <title>회원 가입 결과</title>
 </head>
 <body>
 <h1>title</h1>
 <ul>
-    <% members.forEach(function(member) { %>
-        <li><%= member.name %> (ID: <%= member.loginId %>)</li>
-    <% }); %>
+    <li>(ID: <%= member.userId %>)</li>
+    <li>(NAME: <%= member.name %>)</li>
+    <li>(EMAIL: <%= member.email %>)</li>
 </ul>
 </body>
 </html>
