@@ -78,8 +78,37 @@ export class Response {
 
     }
 
+    changeExtensionToEjs(filePath: string): string {
+        // 디렉토리 경로와 파일 이름(확장자 포함)을 분리합니다.
+        const dir = path.dirname(filePath);
+        const file = path.basename(filePath);
+
+        // 파일 이름에서 확장자를 제외한 부분을 추출합니다.
+        const name = path.basename(file, path.extname(file));
+
+        // 새로운 파일 경로를 생성합니다.
+        return path.join(dir, `${name}.ejs`);
+    }
+
+    async fileExists(filePath: string): Promise<boolean> {
+        try {
+            await fs.promises.access(filePath, fs.constants.F_OK);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
     public async forwardEjs(req: Request, res: Response, viewPath : string, pageData): Promise<void> {
         try {
+            /**
+             * 기본값 : 이전 로직에서 모두 .html로 간주하고 보냈음.
+             * 존재하지않는 파일인경우, 확장자를 ejs로 바꿈.
+             */
+            if(!await this.fileExists(viewPath)){
+                viewPath = this.changeExtensionToEjs(viewPath);
+            }
+
             const stats = await stat(viewPath);
             const file = await fs.promises.readFile(viewPath);
             const ext = path.extname(viewPath).slice(1);
@@ -87,19 +116,6 @@ export class Response {
             const maxAge = cachePolicy[ext] || 'public, max-age=3600';
             res.setCacheControl(maxAge);
 
-            // ETag 생성
-            const etag : string = createHash('md5').update(file).digest('hex');
-
-            // Cache-Control, ETag, Last-Modified 설정
-            res.header('ETag', `${etag}`)
-                .header('Last-Modified', stats.mtime.toUTCString());
-
-            // 조건부 요청 처리
-            if (req.headers.get('if-none-match') === etag) {
-                res.header('Content-Type', mimeType).status(304).send();
-                return;
-            }
-            
             const renderedHtml = await this.renderEjsTemplate(viewPath, pageData);
 
             // 내용이 바뀐경우에만, 새로운 body를 보내준다.

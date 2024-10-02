@@ -13,7 +13,7 @@ export class MemberListControllerV3 implements ControllerV3{
         const members: Member[] =  [
             { id: 1, loginId: 'user1', name: '홍길동' },
             { id: 2, loginId: 'user2', name: '김철수' },
-            { id: 3, loginId: 'user3', name: '이영희' }
+            { id: 3, loginId: 'nvda', name: '젠슨황' }
         ];
         const mv : ModelView = new ModelView("members");
         mv.getModel().set("members",members);

@@ -1,6 +1,6 @@
 export class ModelView {
     private viewName : string;
-    private model : Map<String, Object>= new Map(); // <논리이름, 실제객체? >
+    private model : Map<string, Object>= new Map(); // <논리이름, 실제객체? >
 
     constructor(viewName : string) {
         this.viewName = viewName;
@@ -14,11 +14,11 @@ export class ModelView {
         this.viewName = viewName;
     }
 
-    public getModel() : Map<String, Object>{
+    public getModel() : Map<string, Object>{
         return this.model;
     }
 
-    public setModel(model : Map<String, Object>): void{
+    public setModel(model : Map<string, Object>): void{
         this.model = model;
     }
 
