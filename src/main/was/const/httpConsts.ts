@@ -42,6 +42,7 @@ export const COMMON_MIME_TYPES = {
     'gif': 'image/gif',
     'svg': 'image/svg+xml',
     'pdf': 'application/pdf',
+    'ejs': 'text/html',
 } as const;
 
 export const COMMON_HEADERS = {
