@@ -3,7 +3,7 @@ import {ModelView} from "../../ModelView";
 
 export class MemberFormControllerV3 implements ControllerV3{
 
-    process(paramMap: Map<String, Object>): ModelView {
+    process(paramMap: Map<string, string>): ModelView {
         return new ModelView("new-form");
     }
 }

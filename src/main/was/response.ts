@@ -125,7 +125,6 @@ export class Response {
             console.error('File read error:', error);
             res.status(404).send('File Not Found');
         }
-
     }
 
     async renderEjsTemplate(templatePath: string, data): Promise<string> {

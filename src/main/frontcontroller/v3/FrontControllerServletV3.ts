@@ -6,6 +6,8 @@ import {MemberListControllerV3} from "./controller/MemberListControllerV3";
 import {ModelView} from "../ModelView";
 import {MyView} from "../MyView";
 import * as path from "path";
+import {MemberSaveController} from "./controller/MemberSaveControllerV3";
+import {objectToMap} from "../../utils/utils";
 
 
 export class FrontControllerServletV3 {
@@ -15,6 +17,7 @@ export class FrontControllerServletV3 {
 
     constructor() {
         this.urlPatterns = "/front-controller/v3/";
+        this.controllerMap.set(this.urlPatterns+"members/save", new MemberSaveController());
         this.controllerMap.set(this.urlPatterns+"members/new-form", new MemberFormControllerV3());
         this.controllerMap.set(this.urlPatterns+"members", new MemberListControllerV3());
     }
@@ -29,7 +32,7 @@ export class FrontControllerServletV3 {
         const controller : ControllerV3= this.controllerMap.get(reqURI);
 
         //컨트롤러가 req를 몰라도 되도록 Map에 req 정보를 담아서 넘김
-        const paramMap : Map<String, String> = req.headers;
+        const paramMap : Map<string, string> = objectToMap(req.body); //여기에 body같은것들 다 넘겨야함!
         const mv: ModelView = controller.process(paramMap);
 
         const viewName:string = mv.getViewName(); //논리이름 ex: members

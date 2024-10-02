@@ -8,7 +8,7 @@ interface Member {
 }
 
 export class MemberListControllerV3 implements ControllerV3{
-    process(paramMap: Map<String, Object>): ModelView {
+    process(paramMap: Map<string, string>): ModelView {
         //todo : repository에서 member 모두 찾아서 넣기
         const members: Member[] =  [
             { id: 1, loginId: 'user1', name: '홍길동' },
