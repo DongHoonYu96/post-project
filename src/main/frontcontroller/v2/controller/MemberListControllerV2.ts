@@ -10,6 +10,5 @@ export class MemberListControllerV2 implements ControllerV2{
         const viewPath : string = path.join(process.cwd(), 'dist','views','members.html');
         return new MyView(viewPath);
     }
-
 }
 

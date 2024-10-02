@@ -49,8 +49,8 @@
     </style>
 </head>
 <body>
-<h1>회원목록</h1>
-<ul>
+<div class="container">
+    <h1>회원 목록</h1>
     <table>
         <thead>
         <tr>
@@ -60,15 +60,26 @@
         </tr>
         </thead>
         <tbody>
-    <% members.forEach(function(member) { %>
-            <tr>
-                <td><%= member.userId %> </td>
-                <td><%= member.name %></td>
-                <td><%= member.email %></td>
-            </tr>
-    <% }); %>
+
+        <tr>
+            <td>1</td>
+            <td>chovy</td>
+            <td>정지훈</td>
+        </tr>
+
+        <tr>
+            <td>2</td>
+            <td>faker</td>
+            <td>이상혁</td>
+        </tr>
+
+        <tr>
+            <td>3</td>
+            <td>tsla</td>
+            <td>일론머스크</td>
+        </tr>
         </tbody>
     </table>
-</ul>
+</div>
 </body>
 </html>

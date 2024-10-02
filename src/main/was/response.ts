@@ -5,6 +5,7 @@ import * as fs from "fs";
 import * as path from "path";
 import {createHash} from "node:crypto";
 import {Request} from "../was/request";
+import * as ejs from 'ejs';
 
 type StatusCode = keyof typeof statusCode;
 type Headers = { [key: string]: string };
@@ -76,6 +77,69 @@ export class Response {
         }
 
     }
+
+    changeExtensionToEjs(filePath: string): string {
+        // 디렉토리 경로와 파일 이름(확장자 포함)을 분리합니다.
+        const dir = path.dirname(filePath);
+        const file = path.basename(filePath);
+
+        // 파일 이름에서 확장자를 제외한 부분을 추출합니다.
+        const name = path.basename(file, path.extname(file));
+
+        // 새로운 파일 경로를 생성합니다.
+        return path.join(dir, `${name}.ejs`);
+    }
+
+    async fileExists(filePath: string): Promise<boolean> {
+        try {
+            await fs.promises.access(filePath, fs.constants.F_OK);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    public async forwardEjs(req: Request, res: Response, viewPath : string, pageData): Promise<void> {
+        try {
+            /**
+             * 기본값 : 이전 로직에서 모두 .html로 간주하고 보냈음.
+             * 존재하지않는 파일인경우, 확장자를 ejs로 바꿈.
+             */
+            if(!await this.fileExists(viewPath)){
+                viewPath = this.changeExtensionToEjs(viewPath);
+            }
+
+            const stats = await stat(viewPath);
+            const file = await fs.promises.readFile(viewPath);
+            const ext = path.extname(viewPath).slice(1);
+            const mimeType = COMMON_MIME_TYPES[ext] || 'application/octet-stream';
+            const maxAge = cachePolicy[ext] || 'public, max-age=3600';
+            res.setCacheControl(maxAge);
+
+            const renderedHtml = await this.renderEjsTemplate(viewPath, pageData);
+
+            // 내용이 바뀐경우에만, 새로운 body를 보내준다.
+            res.render(renderedHtml, mimeType);
+
+        } catch (error) {
+            console.error('File read error:', error);
+            res.status(404).send('File Not Found');
+        }
+    }
+
+    async renderEjsTemplate(templatePath: string, data): Promise<string> {
+        // 템플릿 파일 읽기
+        const template =await fs.promises.readFile(templatePath, 'utf-8');
+        //fs.readFileSync(templatePath, 'utf-8');
+
+        // EJS를 사용하여 템플릿 렌더링
+        const html = ejs.render(template, data, {
+            filename: templatePath // 이를 통해 include 기능 등을 사용할 수 있습니다.
+        });
+
+        return html;
+    }
+
 
     public render(data: string | Buffer, mimeType?: string): void {
         if (mimeType) {
