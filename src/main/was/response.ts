@@ -5,6 +5,7 @@ import * as fs from "fs";
 import * as path from "path";
 import {createHash} from "node:crypto";
 import {Request} from "../was/request";
+import * as ejs from 'ejs';
 
 type StatusCode = keyof typeof statusCode;
 type Headers = { [key: string]: string };
@@ -76,6 +77,54 @@ export class Response {
         }
 
     }
+
+    public async forwardEjs(req: Request, res: Response, viewPath : string, pageData): Promise<void> {
+        try {
+            const stats = await stat(viewPath);
+            const file = await fs.promises.readFile(viewPath);
+            const ext = path.extname(viewPath).slice(1);
+            const mimeType = COMMON_MIME_TYPES[ext] || 'application/octet-stream';
+            const maxAge = cachePolicy[ext] || 'public, max-age=3600';
+            res.setCacheControl(maxAge);
+
+            // ETag 생성
+            const etag : string = createHash('md5').update(file).digest('hex');
+
+            // Cache-Control, ETag, Last-Modified 설정
+            res.header('ETag', `${etag}`)
+                .header('Last-Modified', stats.mtime.toUTCString());
+
+            // 조건부 요청 처리
+            if (req.headers.get('if-none-match') === etag) {
+                res.header('Content-Type', mimeType).status(304).send();
+                return;
+            }
+            
+            const renderedHtml = await this.renderEjsTemplate(viewPath, pageData);
+
+            // 내용이 바뀐경우에만, 새로운 body를 보내준다.
+            res.render(renderedHtml, mimeType);
+
+        } catch (error) {
+            console.error('File read error:', error);
+            res.status(404).send('File Not Found');
+        }
+
+    }
+
+    async renderEjsTemplate(templatePath: string, data): Promise<string> {
+        // 템플릿 파일 읽기
+        const template =await fs.promises.readFile(templatePath, 'utf-8');
+        //fs.readFileSync(templatePath, 'utf-8');
+
+        // EJS를 사용하여 템플릿 렌더링
+        const html = ejs.render(template, data, {
+            filename: templatePath // 이를 통해 include 기능 등을 사용할 수 있습니다.
+        });
+
+        return html;
+    }
+
 
     public render(data: string | Buffer, mimeType?: string): void {
         if (mimeType) {

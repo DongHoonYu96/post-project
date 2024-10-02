@@ -10,6 +10,7 @@ import {createHash} from "node:crypto"; // 라우터 타입을 위해 추가
 import { stat } from 'fs/promises';
 import {FrontControllerServletV1} from "../frontcontroller/v1/FrontControllerServletV1";
 import {FrontControllerServletV2} from "../frontcontroller/v2/FrontControllerServletV2";
+import {FrontControllerServletV3} from "../frontcontroller/v3/FrontControllerServletV3";
 
 /**
  * Represents an HTTP request handler function.
@@ -162,6 +163,9 @@ class Server {
         if(req.path.startsWith("/front-controller/v2"))
             frontControllerServletV2.service(req,res);
 
+        const frontControllerServletV3 = new FrontControllerServletV3();
+        if(req.path.startsWith("/front-controller/v3"))
+            frontControllerServletV3.service(req,res);
 
     }
 
