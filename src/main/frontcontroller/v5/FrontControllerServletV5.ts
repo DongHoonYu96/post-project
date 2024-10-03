@@ -14,6 +14,7 @@ import {MemberSaveControllerV4} from "../v4/controller/MemberSaveControllerV4";
 import {MemberListControllerV4} from "../v4/controller/MemberListControllerV4";
 import {ControllerV4HandleAdapter} from "./adapter/ControllerV4HandleAdapter";
 import {ControllerV4} from "../v4/ControllerV4";
+import {HomeController} from "../v4/controller/HomeController";
 
 
 /**
@@ -39,6 +40,10 @@ export class FrontControllerServletV5 {
         this.handlerMappingMap.set("/front-controller/v5/v4/"+"members/save", new MemberSaveControllerV4());
         this.handlerMappingMap.set("/front-controller/v5/v4/"+"members/new-form", new MemberFormControllerV4());
         this.handlerMappingMap.set("/front-controller/v5/v4/"+"members", new MemberListControllerV4());
+
+        this.handlerMappingMap.set("/", new HomeController());
+        this.handlerMappingMap.set("/index", new HomeController());
+        this.handlerMappingMap.set("/index.html", new HomeController());
 
         this.handlerAdapters.push(new ControllerV3HandleAdapter());
         this.handlerAdapters.push(new ControllerV4HandleAdapter());
