@@ -12,6 +12,7 @@ import {FrontControllerServletV1} from "../frontcontroller/v1/FrontControllerSer
 import {FrontControllerServletV2} from "../frontcontroller/v2/FrontControllerServletV2";
 import {FrontControllerServletV3} from "../frontcontroller/v3/FrontControllerServletV3";
 import {FrontControllerServletV4} from "../frontcontroller/v4/FrontControllerServletV4";
+import {FrontControllerServletV5} from "../frontcontroller/v5/FrontControllerServletV5";
 
 /**
  * Represents an HTTP request handler function.
@@ -171,6 +172,10 @@ class Server {
         const frontControllerServletV4 = new FrontControllerServletV4();
         if(req.path.startsWith("/front-controller/v4"))
             frontControllerServletV4.service(req,res);
+
+        const frontControllerServletV5 = new FrontControllerServletV5();
+        if(req.path.startsWith("/front-controller/v5"))
+            frontControllerServletV5.service(req,res);
 
     }
 

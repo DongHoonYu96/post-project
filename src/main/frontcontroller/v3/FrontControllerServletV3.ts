@@ -6,7 +6,7 @@ import {MemberListControllerV3} from "./controller/MemberListControllerV3";
 import {ModelView} from "../ModelView";
 import {MyView} from "../MyView";
 import * as path from "path";
-import {MemberSaveController} from "./controller/MemberSaveControllerV3";
+import {MemberSaveControllerV3} from "./controller/MemberSaveControllerV3";
 import {objectToMap} from "../../utils/utils";
 
 
@@ -17,7 +17,7 @@ export class FrontControllerServletV3 {
 
     constructor() {
         this.urlPatterns = "/front-controller/v3/";
-        this.controllerMap.set(this.urlPatterns+"members/save", new MemberSaveController());
+        this.controllerMap.set(this.urlPatterns+"members/save", new MemberSaveControllerV3());
         this.controllerMap.set(this.urlPatterns+"members/new-form", new MemberFormControllerV3());
         this.controllerMap.set(this.urlPatterns+"members", new MemberListControllerV3());
     }

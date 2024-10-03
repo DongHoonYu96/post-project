@@ -3,7 +3,7 @@ import {ModelView} from "../../ModelView";
 import {Member} from "../../../domain/member/Member";
 import {MemberRepository} from "../../../domain/member/MemberRepository";
 
-export class MemberSaveController implements ControllerV3{
+export class MemberSaveControllerV3 implements ControllerV3{
 
     private memberRepository: MemberRepository = MemberRepository.getInstance();
 
