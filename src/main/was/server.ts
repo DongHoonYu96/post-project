@@ -11,6 +11,7 @@ import { stat } from 'fs/promises';
 import {FrontControllerServletV1} from "../frontcontroller/v1/FrontControllerServletV1";
 import {FrontControllerServletV2} from "../frontcontroller/v2/FrontControllerServletV2";
 import {FrontControllerServletV3} from "../frontcontroller/v3/FrontControllerServletV3";
+import {FrontControllerServletV4} from "../frontcontroller/v4/FrontControllerServletV4";
 
 /**
  * Represents an HTTP request handler function.
@@ -166,6 +167,10 @@ class Server {
         const frontControllerServletV3 = new FrontControllerServletV3();
         if(req.path.startsWith("/front-controller/v3"))
             frontControllerServletV3.service(req,res);
+
+        const frontControllerServletV4 = new FrontControllerServletV4();
+        if(req.path.startsWith("/front-controller/v4"))
+            frontControllerServletV4.service(req,res);
 
     }
 
