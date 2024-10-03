@@ -4,7 +4,7 @@ import * as path from "node:path";
 import * as fs from "node:fs";
 
 
-export const staticServe = (req : Request, res : Response) => {
+export const staticServe = async (req : Request, res : Response) => {
     const mimeType = {
         ".ico": "image/x-icon",
         ".html": "text/html",
@@ -19,14 +19,15 @@ export const staticServe = (req : Request, res : Response) => {
     const publicPath = path.join(process.cwd(), 'dist','views');
 
     if (Object.keys(mimeType).includes(ext)) {
-        fs.readFile(`${publicPath}${req.path}`, (err, data) => {
-            if (err) {
-                res.status(404).send();
-                return;
-            }
-
-            res.status(200).render(data);
-        })
-        return;
+        try{
+            const file = await fs.promises.readFile(`${publicPath}${req.path}`);
+            res.render(file,mimeType[ext]);
+            return true;
+        }catch (error) {
+            console.error('File read error:', error);
+            res.status(404).send('File Not Found');
+            return false;
+        }
     }
+    return false;
 }

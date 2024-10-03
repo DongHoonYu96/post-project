@@ -8,11 +8,8 @@ import { COMMON_MIME_TYPES } from './const/httpConsts';
 import { Router } from './router';
 import {createHash} from "node:crypto"; // 라우터 타입을 위해 추가
 import { stat } from 'fs/promises';
-import {FrontControllerServletV1} from "../frontcontroller/v1/FrontControllerServletV1";
-import {FrontControllerServletV2} from "../frontcontroller/v2/FrontControllerServletV2";
-import {FrontControllerServletV3} from "../frontcontroller/v3/FrontControllerServletV3";
-import {FrontControllerServletV4} from "../frontcontroller/v4/FrontControllerServletV4";
 import {FrontControllerServletV5} from "../frontcontroller/v5/FrontControllerServletV5";
+import {staticServe} from "../middlewares/middlewares";
 
 /**
  * Represents an HTTP request handler function.
@@ -157,6 +154,9 @@ class Server {
 
         this.runMiddleware(this.middlewares, 0, null, req, res);
 
+        const isServed = await staticServe(req,res);
+        if(isServed) return;
+
         const frontControllerServletV5 = new FrontControllerServletV5();
         frontControllerServletV5.service(req,res);
 
@@ -165,7 +165,7 @@ class Server {
 
     private async sendFile(filePath: string, req : Request,  res: Response): Promise<void> {
         try {
-            const stats = await stat(filePath);
+            const stats = await stat(filePath); //날짜읽어오기
             const file = await fs.promises.readFile(filePath);
             const ext = path.extname(filePath).slice(1);
             const mimeType = COMMON_MIME_TYPES[ext] || 'application/octet-stream';
@@ -187,7 +187,6 @@ class Server {
 
             // 내용이 바뀐경우에만, 새로운 body를 보내준다.
             res.render(file,mimeType);
-
 
         } catch (error) {
             console.error('File read error:', error);
