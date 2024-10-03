@@ -11,6 +11,8 @@ import { stat } from 'fs/promises';
 import {FrontControllerServletV1} from "../frontcontroller/v1/FrontControllerServletV1";
 import {FrontControllerServletV2} from "../frontcontroller/v2/FrontControllerServletV2";
 import {FrontControllerServletV3} from "../frontcontroller/v3/FrontControllerServletV3";
+import {FrontControllerServletV4} from "../frontcontroller/v4/FrontControllerServletV4";
+import {FrontControllerServletV5} from "../frontcontroller/v5/FrontControllerServletV5";
 
 /**
  * Represents an HTTP request handler function.
@@ -155,18 +157,10 @@ class Server {
 
         this.runMiddleware(this.middlewares, 0, null, req, res);
 
-        const frontControllerServletV1 = new FrontControllerServletV1();
-        if(req.path.startsWith("/front-controller/v1"))
-            frontControllerServletV1.service(req,res);
+        const frontControllerServletV5 = new FrontControllerServletV5();
+        frontControllerServletV5.service(req,res);
 
-        const frontControllerServletV2 = new FrontControllerServletV2();
-        if(req.path.startsWith("/front-controller/v2"))
-            frontControllerServletV2.service(req,res);
-
-        const frontControllerServletV3 = new FrontControllerServletV3();
-        if(req.path.startsWith("/front-controller/v3"))
-            frontControllerServletV3.service(req,res);
-
+        //todo : 404 Not Found
     }
 
     private async sendFile(filePath: string, req : Request,  res: Response): Promise<void> {
@@ -200,10 +194,6 @@ class Server {
             res.status(404).send('File Not Found');
         }
     }
-    //
-    // public use(router: Router): void {
-    //     this.router = router;
-    // }
 
     public static(directory: string): void {
         this.staticDirectory = directory;

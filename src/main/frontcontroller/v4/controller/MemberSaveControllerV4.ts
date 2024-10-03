@@ -1,13 +1,12 @@
-import {ControllerV3} from "../ControllerV3";
-import {ModelView} from "../../ModelView";
 import {Member} from "../../../domain/member/Member";
 import {MemberRepository} from "../../../domain/member/MemberRepository";
+import {ControllerV4} from "../ControllerV4";
 
-export class MemberSaveControllerV3 implements ControllerV3{
+export class MemberSaveControllerV4 implements ControllerV4{
 
     private memberRepository: MemberRepository = MemberRepository.getInstance();
 
-    process(paramMap: Map<string, string>): ModelView {
+    process(paramMap: Map<string, string>, model: Map<string, object>): string {
         const userId: string = paramMap.get('userId');
         const name: string = paramMap.get('name');
         const email : string = paramMap.get('email');
@@ -16,8 +15,7 @@ export class MemberSaveControllerV3 implements ControllerV3{
         const member = new Member(0, userId, password , name, email);
         this.memberRepository.save(member);
 
-        const mv : ModelView = new ModelView("save-result");
-        mv.getModel().set("member",member);
-        return mv;
+        model.set("member", member);
+        return "save-result";
     }
 }

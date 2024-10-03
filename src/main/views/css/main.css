@@ -1,0 +1,148 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+:root {
+    --DisplayL: 500 32px "Pretendard Variable";
+    --DisplayR: 500 24px "Pretendard Variable";
+    --BoldR: 500 16px /100% "Pretendard Variable";
+    --BoldS: 500 14px /100% "Pretendard Variable";
+    --BodyR: 400 16px "Pretendard Variable";
+    --BodyS: 400 14px "Pretendard Variable";
+}
+
+body,
+div {
+    box-sizing: border-box;
+    font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+.main-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+}
+
+.main-title-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    gap: 8px;
+    width: 100%;
+    max-width: 1040px;
+
+    background: #4362d0;
+    border-radius: 8px;
+}
+
+p {
+    margin: 0;
+}
+
+.main-category {
+    font: var(--BoldR);
+    line-height: 23.17px;
+    color: #d2dae0;
+    width: 100%;
+}
+
+.main-title {
+    font: var(--DisplayR);
+    line-height: 34.75px;
+    color: #ffffff;
+    width: 100%;
+}
+
+.title-block {
+    height: 148px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    color: #14212b;
+    font: var(--DisplayL);
+    text-align: center;
+}
+
+.input-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.input-block {
+    padding: 8px 16px 8px 16px;
+    gap: 8px;
+    border-radius: 8px;
+    border: 1px solid #d2dae0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-label {
+    width: 288px;
+    height: 14px;
+    font: var(--BoldS);
+    color: #4b5966;
+}
+
+.input-data {
+    color: #879298;
+    width: 288px;
+    height: 26px;
+    font: var(--BodyR);
+    border-width: 0;
+}
+
+.login-button-block {
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-long {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 10px;
+    gap: 10px;
+
+    width: 320px;
+    height: 40px;
+
+    background: #4362d0;
+    border-radius: 8px;
+    border-width: 0;
+
+    font: var(--BoldR);
+    color: white;
+}
+
+.button-long:hover {
+    background-color: #14212b;
+}
+
+.button-long:focus {
+    border: 1px solid #14212b;
+}
+
+.post-table-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 16px;
+}
