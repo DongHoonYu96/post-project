@@ -4,12 +4,16 @@ import {ModelView} from "../ModelView";
 import {MyView} from "../MyView";
 import * as path from "path";
 import {objectToMap} from "../../utils/utils";
-import {ControllerV4} from "./ControllerV4";
 import {MyHandlerAdapter} from "./MyHandlerAdapter";
 import {MemberFormControllerV3} from "../v3/controller/MemberFormControllerV3";
 import {MemberListControllerV3} from "../v3/controller/MemberListControllerV3";
 import {ControllerV3HandleAdapter} from "./adapter/ControllerV3HandleAdapter";
 import {MemberSaveControllerV3} from "../v3/controller/MemberSaveControllerV3";
+import {MemberFormControllerV4} from "../v4/controller/MemberFormControllerV4";
+import {MemberSaveControllerV4} from "../v4/controller/MemberSaveControllerV4";
+import {MemberListControllerV4} from "../v4/controller/MemberListControllerV4";
+import {ControllerV4HandleAdapter} from "./adapter/ControllerV4HandleAdapter";
+import {ControllerV4} from "../v4/ControllerV4";
 
 
 /**
@@ -32,7 +36,12 @@ export class FrontControllerServletV5 {
         this.handlerMappingMap.set("/front-controller/v5/v3/"+"members/new-form", new MemberFormControllerV3());
         this.handlerMappingMap.set("/front-controller/v5/v3/"+"members", new MemberListControllerV3());
 
+        this.handlerMappingMap.set("/front-controller/v5/v4/"+"members/save", new MemberSaveControllerV4());
+        this.handlerMappingMap.set("/front-controller/v5/v4/"+"members/new-form", new MemberFormControllerV4());
+        this.handlerMappingMap.set("/front-controller/v5/v4/"+"members", new MemberListControllerV4());
+
         this.handlerAdapters.push(new ControllerV3HandleAdapter());
+        this.handlerAdapters.push(new ControllerV4HandleAdapter());
     }
 
     public service(req : Request, res : Response){

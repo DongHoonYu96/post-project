@@ -11,14 +11,12 @@ export class ControllerV3HandleAdapter implements MyHandlerAdapter {
      * -> 세부비교 필요
      * @param handler
      */
-    supports(handler : any): boolean {;
-        const a = handler !== null
-        const b = "process" in handler;
-        const c = typeof (handler as ControllerV3).process === "function";
+    supports(handler : any): boolean {
         return (
              handler !== null &&
             "process" in handler &&
-            typeof (handler as ControllerV3).process === "function"
+            typeof (handler as ControllerV3).process === "function" &&
+             (handler as ControllerV3).process.length === 1
         );
     }
 
