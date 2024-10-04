@@ -22,12 +22,12 @@ export const staticServe = async (req : Request, res : Response) => {
         try{
             const file = await fs.promises.readFile(`${publicPath}${req.path}`);
             res.render(file,mimeType[ext]);
-            return true;
         }catch (error) {
             console.error('File read error:', error);
             res.status(404).send('File Not Found');
-            return false;
+        }
+        finally {
+            req.isEnd=true;
         }
     }
-    return false;
 }

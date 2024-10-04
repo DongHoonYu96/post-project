@@ -60,7 +60,7 @@ class Server {
         err: Error | null,
         req: Request,
         res: Response,
-    ): void {
+    ) {
         if (index < 0 || index >= middlewares.length) return;
 
         const nextMiddleware = middlewares[index];
@@ -154,8 +154,9 @@ class Server {
 
         this.runMiddleware(this.middlewares, 0, null, req, res);
 
-        const isServed = await staticServe(req,res);
-        if(isServed) return;
+        await staticServe(req,res);
+
+        if(req.isEnd) return;
 
         const frontControllerServletV5 = new FrontControllerServletV5();
         frontControllerServletV5.service(req,res);
