@@ -16,6 +16,7 @@ import {ControllerV4HandleAdapter} from "./adapter/ControllerV4HandleAdapter";
 import {ControllerV4} from "../v4/ControllerV4";
 import {HomeController} from "../v4/controller/HomeController";
 import {UserFormController} from "../v4/controller/UserFormController";
+import {UserSaveController} from "../v4/controller/UserSaveController";
 
 
 /**
@@ -41,6 +42,7 @@ export class FrontControllerServletV5 {
         this.handlerMappingMap.set("/index.html", new HomeController());
 
         this.handlerMappingMap.set("/user/form", new UserFormController());
+        this.handlerMappingMap.set("/user/save", new UserSaveController());
 
 
         this.handlerAdapters.push(new ControllerV3HandleAdapter());
