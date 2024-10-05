@@ -15,6 +15,8 @@ import {MemberListControllerV4} from "../v4/controller/MemberListControllerV4";
 import {ControllerV4HandleAdapter} from "./adapter/ControllerV4HandleAdapter";
 import {ControllerV4} from "../v4/ControllerV4";
 import {HomeController} from "../v4/controller/HomeController";
+import {UserFormController} from "../v4/controller/UserFormController";
+import {UserSaveController} from "../v4/controller/UserSaveController";
 
 
 /**
@@ -33,20 +35,28 @@ export class FrontControllerServletV5 {
     private handlerAdapters : MyHandlerAdapter[]= []; // 핸들러 어댑터들 저장. 핸들러 어댑터 목록
 
     constructor() {
-        this.handlerMappingMap.set("/front-controller/v5/v3/"+"members/save", new MemberSaveControllerV3());
-        this.handlerMappingMap.set("/front-controller/v5/v3/"+"members/new-form", new MemberFormControllerV3());
-        this.handlerMappingMap.set("/front-controller/v5/v3/"+"members", new MemberListControllerV3());
-
-        this.handlerMappingMap.set("/front-controller/v5/v4/"+"members/save", new MemberSaveControllerV4());
-        this.handlerMappingMap.set("/front-controller/v5/v4/"+"members/new-form", new MemberFormControllerV4());
-        this.handlerMappingMap.set("/front-controller/v5/v4/"+"members", new MemberListControllerV4());
+        this.initMemberController();
 
         this.handlerMappingMap.set("/", new HomeController());
         this.handlerMappingMap.set("/index", new HomeController());
         this.handlerMappingMap.set("/index.html", new HomeController());
 
+        this.handlerMappingMap.set("/user/form", new UserFormController());
+        this.handlerMappingMap.set("/user/save", new UserSaveController());
+
+
         this.handlerAdapters.push(new ControllerV3HandleAdapter());
         this.handlerAdapters.push(new ControllerV4HandleAdapter());
+    }
+
+    private initMemberController() {
+        this.handlerMappingMap.set("/front-controller/v5/v3/" + "members/save", new MemberSaveControllerV3());
+        this.handlerMappingMap.set("/front-controller/v5/v3/" + "members/new-form", new MemberFormControllerV3());
+        this.handlerMappingMap.set("/front-controller/v5/v3/" + "members", new MemberListControllerV3());
+
+        this.handlerMappingMap.set("/front-controller/v5/v4/" + "members/save", new MemberSaveControllerV4());
+        this.handlerMappingMap.set("/front-controller/v5/v4/" + "members/new-form", new MemberFormControllerV4());
+        this.handlerMappingMap.set("/front-controller/v5/v4/" + "members", new MemberListControllerV4());
     }
 
     public service(req : Request, res : Response){
@@ -71,7 +81,7 @@ export class FrontControllerServletV5 {
 
     /**
      * 핸들러 어댑터 목록을 완탐하면서
-     * 지금 들어온 핸들러가 지원 목록에 있는지 확인,
+     * 지금 들어온 핸들러가 지원 목록에 있는지 확인 && 구현체인지 확인,
      * 그것 리턴.
      * @param handler
      * @private

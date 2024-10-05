@@ -12,7 +12,7 @@ async function main() {
     const app = new Server();
 
     app.use(logger);
-    app.use(staticServe);
+    // app.use(staticServe);
 
     const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
