@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입</title>
+    <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body class="main-block">
+<div class="title-block">
+    <div class="title">회원가입</div>
+</div>
+<form action="save" method="POST">
+    <div class="input-form">
+        <div class="input-block">
+            <label class="input-label">이메일</label>
+            <input
+                    class="input-data"
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder="이메일을 입력해주세요"
+            />
+        </div>
+        <div class="input-block">
+            <label class="input-label">닉네임</label>
+            <input
+                    class="input-data"
+                    type="nickname"
+                    id="nickname"
+                    name="nickname"
+                    required
+                    placeholder="닉네임을 입력해주세요"
+            />
+        </div>
+        <div class="input-block">
+            <label class="input-label">비밀번호</label>
+            <input
+                    class="input-data"
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                    placeholder="비밀번호를 입력해주세요"
+            />
+        </div>
+        <div class="login-button-block">
+            <button type="submit" class="button-long login">회원가입</button>
+        </div>
+    </div>
+</form>
+</div>
+
+<!--<script src="../js/main.js"></script>-->
+</body>
+</html>
