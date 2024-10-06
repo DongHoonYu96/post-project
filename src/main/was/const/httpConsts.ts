@@ -58,6 +58,7 @@ export const COMMON_HEADERS = {
 export const statusCode = {
     200: 'OK',
     201: 'CREATED',
+    302: 'Found',
     304: 'NOT Modified',
     400: 'BAD REQUEST',
     401: 'UNAUTHORIZED',

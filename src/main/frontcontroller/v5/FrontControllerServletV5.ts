@@ -73,8 +73,23 @@ export class FrontControllerServletV5 {
         const adapter = this.getHandlerAdapter(handler);
         const mv = adapter.handle(req,res,handler);
 
-        const viewName = mv.getViewName();
-        const view: MyView = this.viewResolver(viewName); //물리이름이 들어간 MyView 객체 만들기
+        /**
+         * Controller에서 redirect:index 요청시
+         * res.302
+         * res.location = index.html
+         */
+        let viewName = mv.getViewName();
+        let view: MyView = this.viewResolver(viewName); //물리이름이 들어간 MyView 객체 만들기
+
+        /**
+         * redirect 처리위한 로직
+         */
+        if(viewName.startsWith("redirect:")){
+            const [_, temp ] = viewName.split(":");
+            viewName = temp;
+            view = this.viewResolver(viewName);
+            res.status(302).header("Location","http://localhost:3000/" + viewName);
+        }
 
         view.renderEjs(mv.getModel(),req,res);
     }

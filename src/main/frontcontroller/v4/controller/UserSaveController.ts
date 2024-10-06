@@ -15,7 +15,7 @@ export class UserSaveController implements ControllerV4{
         const member = new Member(0, userId, password , name, email);
         this.memberRepository.save(member);
 
-        model.set("member", member);
-        return "save-result";
+        // model.set("member", member);
+        return "redirect:index";
     }
 }
