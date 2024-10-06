@@ -119,16 +119,16 @@ export class Response {
 
             const renderedHtml = await this.renderEjsTemplate(viewPath, pageData);
 
-            // if(isNotExist) {
-            //     const renderedHtml = await this.renderEjsTemplate(viewPath, pageData);
-            //     res.render(renderedHtml, mimeType);
-            // }
-            // else{
-            //     res.render(file, mimeType);
-            // }
+            if(isNotExist) {
+                const renderedHtml = await this.renderEjsTemplate(viewPath, pageData);
+                res.render(renderedHtml, mimeType);
+            }
+            else{
+                res.render(file, mimeType);
+            }
 
             // 내용이 바뀐경우에만, 새로운 body를 보내준다.
-            res.render(renderedHtml, mimeType);
+            // res.render(renderedHtml, mimeType);
 
         } catch (error) {
             console.error('File read error:', error);
