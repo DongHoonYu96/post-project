@@ -6,7 +6,7 @@ import { Request } from './was/request';
 import { Response } from './was/response';
 import { COMMON_MIME_TYPES } from './was/const/httpConsts';
 import {logger} from "./middlewares/logger";
-import {staticServe} from "./middlewares/middlewares";
+import {StaticServe} from "./middlewares/StaticServe";
 
 async function main() {
     const app = new Server();

@@ -4,7 +4,7 @@ import * as path from "node:path";
 import * as fs from "node:fs";
 
 
-export const staticServe = async (req : Request, res : Response) => {
+export const StaticServe = async (req : Request, res : Response) => {
     const mimeType = {
         ".ico": "image/x-icon",
         ".html": "text/html",
