@@ -158,6 +158,11 @@ export class Response {
         this.send();
     }
 
+    public cookie(name:string, uuid : string) : this {
+        this.header("Set-Cookie",name+"="+uuid+"; "+"path=/");
+        return this;
+    }
+
     public send(body?: string | Buffer): void {
         if (body !== undefined) {
             this.body = body;
