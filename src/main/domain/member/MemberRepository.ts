@@ -2,7 +2,8 @@ import { Member } from "./Member";
 
 export class MemberRepository {
     private static instance: MemberRepository | null = null;
-    private store: Map<number, Member> = new Map();
+    // private store: Map<number, Member> = new Map();
+    private store: Map<string, Member> = new Map();
     private sequence: number = 0;
 
     /**
@@ -29,7 +30,14 @@ export class MemberRepository {
      */
     public save(member: Member): Member {
         member.setId(++this.sequence);
-        this.store.set(member.getId(), member);
+
+        if(this.store.has(member.getEmail())){
+            console.log('이미 존재하는 email 입니다.' + member.getEmail());
+            return;
+            // throw new Error('이미 존재하는 email 입니다.' + member.getEmail());
+        }
+
+        this.store.set(member.getEmail(), member);
         return member;
     }
 
@@ -38,8 +46,12 @@ export class MemberRepository {
      * @param {number} id - 조회할 Member의 ID
      * @returns {Member | undefined} 조회된 Member 객체 또는 undefined
      */
-    public findById(id: number): Member | undefined {
-        return this.store.get(id);
+    // public findById(id: number): Member | undefined {
+    //     return this.store.get(id);
+    // }
+
+    public findByEmail(email: string): Member | undefined {
+        return this.store.get(email);
     }
 
     /**

@@ -12,9 +12,13 @@ export class UserSaveController implements ControllerV4{
         const password: string = paramMap.get('password');
 
         const member = new Member(0, email, nickname , password);
-        this.memberRepository.save(member);
+        try{
+            this.memberRepository.save(member);
+        }
+        catch(e){
+            return "redirect:error";
+        }
 
-        // model.set("member", member);
         return "redirect:index";
     }
 }

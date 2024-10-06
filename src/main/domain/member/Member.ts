@@ -1,7 +1,6 @@
 export class Member {
 
     private id: number; // DB의 AutoIncrement Id
-    private userId: string;
     private nickname: string;
     private password: string;
     private email: string;
@@ -17,7 +16,14 @@ export class Member {
         this.id = id;
     }
 
+    public getEmail(){
+        return this.email;
+    }
     public getId() {
         return this.id;
+    }
+
+    public getPassword() {
+        return this.password;
     }
 }

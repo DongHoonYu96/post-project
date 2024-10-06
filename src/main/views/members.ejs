@@ -54,16 +54,15 @@
     <table>
         <thead>
         <tr>
-            <th>ID</th>
-            <th>이름</th>
-            <th>email</th>
+            <th>닉네임</th>
+            <th>이메일</th>
+            <th>회원가입일</th>
         </tr>
         </thead>
         <tbody>
     <% members.forEach(function(member) { %>
             <tr>
-                <td><%= member.userId %> </td>
-                <td><%= member.name %></td>
+                <td><%= member.nickname %> </td>
                 <td><%= member.email %></td>
             </tr>
     <% }); %>

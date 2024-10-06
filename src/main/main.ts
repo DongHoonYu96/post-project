@@ -1,17 +1,12 @@
-import * as path from 'path';
-import * as fs from 'fs/promises';
 import { Server } from './was/server';
-import { Router } from './was/router';
-import { Request } from './was/request';
-import { Response } from './was/response';
-import { COMMON_MIME_TYPES } from './was/const/httpConsts';
 import {logger} from "./middlewares/logger";
-import {StaticServe} from "./middlewares/StaticServe";
+import * as cookieParser from 'cookie-parser';
 
 async function main() {
     const app = new Server();
 
     app.use(logger);
+    app.use(cookieParser());
     // app.use(staticServe);
 
     const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;

@@ -17,6 +17,8 @@ class Request implements ParsedRequest {
     public query: { [key: string]: string | string[] };
     public headers: Map<string, string>;
     public body: any;
+    public Cookie : any;
+    public cookies : any;
     public isEnd : boolean;
     private rawBody: Buffer;
 
