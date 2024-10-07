@@ -17,6 +17,11 @@ import {ControllerV4} from "../v4/ControllerV4";
 import {HomeController} from "../v4/controller/HomeController";
 import {UserFormController} from "../v4/controller/UserFormController";
 import {UserSaveController} from "../v4/controller/UserSaveController";
+import {ControllerV6HandleAdapter} from "./adapter/ControllerV6HandleAdapter";
+import {LoginControllerV6} from "../v6/controller/LoginControllerV6";
+import {LoginFailControllerV4} from "../v4/controller/LoginFailControllerV4";
+import {LoginFormController} from "../v4/controller/LoginFormController";
+import {UserListControllerV4} from "../v4/controller/UserListControllerV4";
 
 
 /**
@@ -31,7 +36,7 @@ import {UserSaveController} from "../v4/controller/UserSaveController";
 export class FrontControllerServletV5 {
 
     private readonly urlPatterns:string;
-    private handlerMappingMap : Map<String,any> = new Map<String, ControllerV4>; //모든타입(any)의 핸들러(컨트롤러)지원
+    private handlerMappingMap : Map<String,any> = new Map<String, any>; //모든타입(any)의 핸들러(컨트롤러)지원
     private handlerAdapters : MyHandlerAdapter[]= []; // 핸들러 어댑터들 저장. 핸들러 어댑터 목록
 
     constructor() {
@@ -44,9 +49,16 @@ export class FrontControllerServletV5 {
         this.handlerMappingMap.set("/user/form", new UserFormController());
         this.handlerMappingMap.set("/user/save", new UserSaveController());
 
+        this.handlerMappingMap.set("/user/login/form", new LoginFormController());
+        this.handlerMappingMap.set("/user/login", new LoginControllerV6());
+        this.handlerMappingMap.set("/user/login_failed", new LoginFailControllerV4());
+
+        this.handlerMappingMap.set("/user/list", new UserListControllerV4());
+
 
         this.handlerAdapters.push(new ControllerV3HandleAdapter());
         this.handlerAdapters.push(new ControllerV4HandleAdapter());
+        this.handlerAdapters.push(new ControllerV6HandleAdapter());
     }
 
     private initMemberController() {
@@ -73,8 +85,23 @@ export class FrontControllerServletV5 {
         const adapter = this.getHandlerAdapter(handler);
         const mv = adapter.handle(req,res,handler);
 
-        const viewName = mv.getViewName();
-        const view: MyView = this.viewResolver(viewName); //물리이름이 들어간 MyView 객체 만들기
+        /**
+         * Controller에서 redirect:index 요청시
+         * res.302
+         * res.location = index.html
+         */
+        let viewName = mv.getViewName();
+        let view: MyView = this.viewResolver(viewName); //물리이름이 들어간 MyView 객체 만들기
+
+        /**
+         * redirect 처리위한 로직
+         */
+        if(viewName.startsWith("redirect:")){
+            const [_, temp ] = viewName.split(":");
+            viewName = temp;
+            view = this.viewResolver(viewName);
+            res.status(302).header("Location","http://localhost:3000/" + viewName);
+        }
 
         view.renderEjs(mv.getModel(),req,res);
     }

@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>회원가입</title>
-    <link rel="stylesheet" href="../views/css/main.css" />
+    <link rel="stylesheet" href="../css/main.css" />
 </head>
 <body class="main-block">
 <div class="title-block">
-    <div class="title">로그인</div>
+    <div class="title">회원가입</div>
 </div>
-<form action="/login" method="POST">
+<form action="save" method="POST">
     <div class="input-form">
         <div class="input-block">
             <label class="input-label">이메일</label>
@@ -21,6 +21,17 @@
                     name="email"
                     required
                     placeholder="이메일을 입력해주세요"
+            />
+        </div>
+        <div class="input-block">
+            <label class="input-label">닉네임</label>
+            <input
+                    class="input-data"
+                    type="nickname"
+                    id="nickname"
+                    name="nickname"
+                    required
+                    placeholder="닉네임을 입력해주세요"
             />
         </div>
         <div class="input-block">
@@ -35,14 +46,12 @@
             />
         </div>
         <div class="login-button-block">
-            <button type="submit" class="button-long login">로그인</button>
-            <div style="font: var(--BodyS)">
-                아직 회원가입을 안하셨나요?
-                <a style="font: var(--BoldS)" href="/user/form.html">회원가입하기</a>
-            </div>
+            <button type="submit" class="button-long login">회원가입</button>
         </div>
     </div>
 </form>
+</div>
 
+<!--<script src="../js/main.js"></script>-->
 </body>
 </html>

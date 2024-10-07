@@ -7,15 +7,18 @@ export class UserSaveController implements ControllerV4{
     private memberRepository: MemberRepository = MemberRepository.getInstance();
 
     process(paramMap: Map<string, string>, model: Map<string, object>): string {
-        const userId: string = paramMap.get('userId');
-        const name: string = paramMap.get('name');
-        const email : string = paramMap.get('email');
+        const email: string = paramMap.get('email');
+        const nickname: string = paramMap.get('nickname');
         const password: string = paramMap.get('password');
 
-        const member = new Member(0, userId, password , name, email);
-        this.memberRepository.save(member);
+        const member = new Member(0, email, nickname , password);
+        try{
+            this.memberRepository.save(member);
+        }
+        catch(e){
+            return "redirect:error";
+        }
 
-        model.set("member", member);
-        return "save-result";
+        return "redirect:index";
     }
 }

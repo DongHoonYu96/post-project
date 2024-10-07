@@ -11,4 +11,6 @@ export class MemberFormControllerV2 implements ControllerV2{
         return new MyView(viewPath);
     }
 
+    version2() {
+    }
 }

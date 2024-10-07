@@ -103,9 +103,10 @@ export class Response {
         try {
             /**
              * 기본값 : 이전 로직에서 모두 .html로 간주하고 보냈음.
-             * 존재하지않는 파일인경우, 확장자를 ejs로 바꿈.
+             * 존재하지않는 파일인경우, 확장자를 ejs로 바꿈 && 동적렌더링.
              */
-            if(!await this.fileExists(viewPath)){
+            const isNotExist = !await this.fileExists(viewPath);
+            if(isNotExist){
                 viewPath = this.changeExtensionToEjs(viewPath);
             }
 
@@ -118,8 +119,16 @@ export class Response {
 
             const renderedHtml = await this.renderEjsTemplate(viewPath, pageData);
 
+            if(isNotExist) {
+                const renderedHtml = await this.renderEjsTemplate(viewPath, pageData);
+                res.render(renderedHtml, mimeType);
+            }
+            else{
+                res.render(file, mimeType);
+            }
+
             // 내용이 바뀐경우에만, 새로운 body를 보내준다.
-            res.render(renderedHtml, mimeType);
+            // res.render(renderedHtml, mimeType);
 
         } catch (error) {
             console.error('File read error:', error);
@@ -146,6 +155,16 @@ export class Response {
             this.header('Content-Type', mimeType);
         }
         this.body = data;
+        this.send();
+    }
+
+    public cookie(name:string, uuid : string) : this {
+        this.header("Set-Cookie",name+"="+uuid+"; "+"path=/");
+        return this;
+    }
+
+    public redirect(path: string) {
+        this.header("Location","http://localhost:3000/" + path);
         this.send();
     }
 

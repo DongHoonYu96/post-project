@@ -9,7 +9,7 @@ import { Router } from './router';
 import {createHash} from "node:crypto"; // 라우터 타입을 위해 추가
 import { stat } from 'fs/promises';
 import {FrontControllerServletV5} from "../frontcontroller/v5/FrontControllerServletV5";
-import {staticServe} from "../middlewares/middlewares";
+import {StaticServe} from "../middlewares/StaticServe";
 
 /**
  * Represents an HTTP request handler function.
@@ -154,7 +154,9 @@ class Server {
 
         this.runMiddleware(this.middlewares, 0, null, req, res);
 
-        await staticServe(req,res);
+        if(req.isEnd) return;
+
+        await StaticServe(req,res);
 
         if(req.isEnd) return;
 
