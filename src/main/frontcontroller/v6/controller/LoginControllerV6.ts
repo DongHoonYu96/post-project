@@ -16,11 +16,11 @@ export class LoginControllerV6 implements ControllerV6{
         const findMember = this.memberRepository.findByEmail(email);
         if(!findMember){
             console.log('회원없음 회원가입필요');
-            return "new-form";
+            return "redirect:user/login_failed";
         }
         if(findMember && password !== findMember.getPassword()){
             console.log('비밀번호 불일치');
-            return "new-form";
+            return "redirect:user/login_failed";
         }
 
         this.sessionMgr.createSession(findMember, res);
