@@ -9,7 +9,7 @@ import {Request} from "../was/request";
 export class SessionManager {
     private static instance: SessionManager;
     private sessionStore: Map<string, Member>;
-    private readonly SESSION_COOKIE_NAME = 'asdfCookie';
+    public readonly SESSION_COOKIE_NAME = 'asdfCookie';
     private readonly SESSION_DURATION = 30 * 60 * 1000; // 30 minutes
 
     private constructor() {
@@ -58,7 +58,7 @@ export class SessionManager {
      * @param cookieName - The name of the cookie to find.
      * @returns The cookie value if found, null otherwise.
      */
-    private findCookie(req: Request, cookieName: string) {
+    public findCookie(req: Request, cookieName: string) {
         if(req.cookies === null){
             return null;
         }

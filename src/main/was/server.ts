@@ -154,6 +154,8 @@ class Server {
 
         this.runMiddleware(this.middlewares, 0, null, req, res);
 
+        if(req.isEnd) return;
+
         await StaticServe(req,res);
 
         if(req.isEnd) return;

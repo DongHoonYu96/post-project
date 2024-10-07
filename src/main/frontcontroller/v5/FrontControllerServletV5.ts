@@ -21,6 +21,7 @@ import {ControllerV6HandleAdapter} from "./adapter/ControllerV6HandleAdapter";
 import {LoginControllerV6} from "../v6/controller/LoginControllerV6";
 import {LoginFailControllerV4} from "../v4/controller/LoginFailControllerV4";
 import {LoginFormController} from "../v4/controller/LoginFormController";
+import {UserListControllerV4} from "../v4/controller/UserListControllerV4";
 
 
 /**
@@ -51,6 +52,8 @@ export class FrontControllerServletV5 {
         this.handlerMappingMap.set("/user/login/form", new LoginFormController());
         this.handlerMappingMap.set("/user/login", new LoginControllerV6());
         this.handlerMappingMap.set("/user/login_failed", new LoginFailControllerV4());
+
+        this.handlerMappingMap.set("/user/list", new UserListControllerV4());
 
 
         this.handlerAdapters.push(new ControllerV3HandleAdapter());

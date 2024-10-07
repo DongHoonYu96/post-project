@@ -1,12 +1,14 @@
 import { Server } from './was/server';
 import {logger} from "./middlewares/logger";
 import * as cookieParser from 'cookie-parser';
+import {authMiddleware} from "./middlewares/Auth";
 
 async function main() {
     const app = new Server();
 
     app.use(logger);
     app.use(cookieParser());
+    app.use(authMiddleware);
     // app.use(staticServe);
 
     const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;

@@ -163,6 +163,11 @@ export class Response {
         return this;
     }
 
+    public redirect(path: string) {
+        this.header("Location","http://localhost:3000/" + path);
+        this.send();
+    }
+
     public send(body?: string | Buffer): void {
         if (body !== undefined) {
             this.body = body;
