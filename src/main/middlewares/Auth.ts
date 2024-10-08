@@ -2,7 +2,8 @@ import {Request} from "../was/request";
 import {Response} from "../was/response";
 import {SessionManager} from "../utils/SessionManager";
 
-const whiteList: string[] = ['index','/user/login','/user/form','/user/save','/user/login/form','/user/login/failed',  '/css', '/js', '/images', '/favicon.ico', '/user/views/css/main.css'];
+const whiteList: string[] = ['/index','/index2.html','/user/login','/user/form','/user/save',
+    '/user/login/form','/user/login/failed',  '/css', '/js', '/images', '/favicon.ico', '/user/views/css/main.css'];
 const sessionManager: SessionManager = SessionManager.getInstance();
 
 function isLoginCheckPath(url: string): boolean {
