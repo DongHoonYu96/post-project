@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn} from "typeorm";
 
 @Entity("members")
 export class Member {
@@ -14,6 +14,12 @@ export class Member {
 
     @Column({ unique: true })
     email: string;
+
+    @CreateDateColumn() //밀리초 저장안함.
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
 
     constructor(email : string , nickname: string, password : string) {
         this.nickname = nickname;

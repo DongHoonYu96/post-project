@@ -4,5 +4,5 @@ export interface ControllerV4{
      * @param model
      * @return viewName
      */
-    process (paramMap : Map<string, string> , model : Map<string, object> ): string;
+    process (paramMap : Map<string, string> , model : Map<string, object> );
 }
