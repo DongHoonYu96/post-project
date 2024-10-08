@@ -1,7 +1,11 @@
 # 아키텍처 구조
 ![image](https://github.com/user-attachments/assets/f685c46b-f4f6-4a52-b534-6efc3bbff4b4)
+- was 구조
+![image](https://github.com/user-attachments/assets/69a5c852-bd0f-4428-8b1f-674ed7cb8577)
+- 컨트롤러 구조
+  ![image](https://github.com/user-attachments/assets/7414bf56-1cae-4a92-b25d-f64535ec72ba)
 
-+ 추후 구조 확대 가능(Redis, Docker, nginx, K8S, Jenkins, AWS, ...) 
++ 추후 구조 확대 가능
 
 # API 명세서
 ## Auth
