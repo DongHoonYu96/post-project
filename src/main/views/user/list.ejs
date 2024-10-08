@@ -1,7 +1,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/memberList.css">
 </head>
 
 <body>
@@ -25,14 +25,14 @@
 
 <section class="board-box">
     <p class="board-count">전체멤버<span>N</span>명</p>
-    <ul class="board-list" >
-        <li class="board-header">
+    <ul class="board-list-member" >
+        <li class="board-header-member">
             <p class="board-header-nickname BordS">닉네임</p>
             <p class="board-header-email BordS">이메일</p>
             <p class="board-header-createdAt BordS">회원가입일</p>
         </li>
         <% members.forEach(function(member) { %>
-            <li class="board-item">
+            <li class="board-item-member">
                 <p class="board-header-nickname BordS"><%= member.nickname %></p>
                 <p class="board-header-email BordS"><%= member.email %></p>
                 <p class="board-header-createdAt BordS"><%= member.createdAt %></p>

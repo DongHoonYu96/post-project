@@ -19,6 +19,7 @@ import {LoginControllerV6} from "../v6/controller/LoginControllerV6";
 import {LoginFailControllerV4} from "../v4/controller/LoginFailControllerV4";
 import {LoginFormController} from "../v4/controller/LoginFormController";
 import {UserListControllerV4} from "../v4/controller/UserListControllerV4";
+import {HomeControllerV6} from "../v6/controller/HomeControllerV6";
 
 
 /**
@@ -39,9 +40,9 @@ export class FrontControllerServletV5 {
     constructor() {
         this.initMemberController();
 
-        this.handlerMappingMap.set("/", new HomeController());
-        this.handlerMappingMap.set("/index", new HomeController());
-        this.handlerMappingMap.set("/index.html", new HomeController());
+        this.handlerMappingMap.set("/", new HomeControllerV6());
+        this.handlerMappingMap.set("/index", new HomeControllerV6());
+        this.handlerMappingMap.set("/index.html", new HomeControllerV6());
 
         this.handlerMappingMap.set("/user/form", new UserFormController());
         this.handlerMappingMap.set("/user/save", new UserSaveController());

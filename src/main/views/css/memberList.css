@@ -490,3 +490,72 @@ ul {
     list-style-type: none;
 }
 
+
+
+/* 위에는 main 복붙 */
+
+.board-list-member {
+    list-style-type: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;  /* 닉네임, 이메일, 회원가입일의 비율 */
+    gap: 10px;  /* 열 사이의 간격 */
+}
+
+.board-header-member, .board-item-member {
+    display: contents;
+}
+
+.board-header-nickname,
+.board-header-email,
+.board-header-createdAt {
+    padding: 10px;
+    text-align: left;
+}
+
+.board-header p {
+    font-weight: bold;
+    background-color: #f0f0f0;  /* 헤더 배경색 */
+}
+
+.board-item p {
+    background-color: #ffffff;  /* 아이템 배경색 */
+}
+
+/* 짝수 번째 아이템에 다른 배경색 적용 (선택사항) */
+.board-item:nth-child(even) p {
+    background-color: #f9f9f9;
+}
+
+.board-item-member {
+    border-bottom: 1px solid #ddd;  /* 밑줄 추가 */
+    padding: 10px 0;  /* 위아래 패딩 추가 */
+}
+
+.board-item-member:last-child {
+    border-bottom: none;  /* 마지막 항목의 밑줄 제거 */
+}
+
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 768px) {
+    .board-list {
+        grid-template-columns: 1fr;
+    }
+
+    .board-header {
+        display: none;  /* 모바일에서는 헤더를 숨김 */
+    }
+
+    .board-item p {
+        padding: 5px;
+    }
+
+    .board-item {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+}
+
