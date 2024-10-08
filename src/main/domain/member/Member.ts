@@ -1,9 +1,19 @@
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+
+@Entity("members")
 export class Member {
 
+    @PrimaryGeneratedColumn()
     private id: number; // DB의 AutoIncrement Id
+
+    @Column()
     private nickname: string;
-    private password: string;
-    private email: string;
+
+    @Column()
+    private readonly password: string;
+
+    @Column({ unique: true })
+    private readonly email: string;
 
     constructor(id: number, email : string , nickname: string, password : string) {
         this.id = id;
