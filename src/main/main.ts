@@ -1,17 +1,25 @@
 import { Server } from './was/server';
 import {logger} from "./middlewares/logger";
-import * as cookieParser from 'cookie-parser';
 import {authMiddleware} from "./middlewares/Auth";
+import {MyCookieParser} from "./middlewares/MyCookieParser";
+import "dotenv/config";
+import {AppDataSource} from "./repositories/AppDataSource";
 
 async function main() {
     const app = new Server();
 
-    app.use(logger);
-    app.use(cookieParser());
-    app.use(authMiddleware);
-    // app.use(staticServe);
+    AppDataSource.getInstance().initialize().
+    then(() => {
+        console.log("Data Source has been initialized!")
+    }).catch((err) => {
+        console.error("Error during Data Source initialization", err)
+    })
 
-    const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+    app.use(logger);
+    app.use(MyCookieParser);
+    // app.use(authMiddleware);
+
+    const port = 3000;
 
     app.listen(port, () => {
         console.log(`HTTP server running on http://localhost:${port}`);

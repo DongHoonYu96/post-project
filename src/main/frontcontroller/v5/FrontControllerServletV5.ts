@@ -1,9 +1,7 @@
 import {Response} from "../../was/response";
 import {Request} from "../../was/request";
-import {ModelView} from "../ModelView";
 import {MyView} from "../MyView";
 import * as path from "path";
-import {objectToMap} from "../../utils/utils";
 import {MyHandlerAdapter} from "./MyHandlerAdapter";
 import {MemberFormControllerV3} from "../v3/controller/MemberFormControllerV3";
 import {MemberListControllerV3} from "../v3/controller/MemberListControllerV3";
@@ -13,7 +11,6 @@ import {MemberFormControllerV4} from "../v4/controller/MemberFormControllerV4";
 import {MemberSaveControllerV4} from "../v4/controller/MemberSaveControllerV4";
 import {MemberListControllerV4} from "../v4/controller/MemberListControllerV4";
 import {ControllerV4HandleAdapter} from "./adapter/ControllerV4HandleAdapter";
-import {ControllerV4} from "../v4/ControllerV4";
 import {HomeController} from "../v4/controller/HomeController";
 import {UserFormController} from "../v4/controller/UserFormController";
 import {UserSaveController} from "../v4/controller/UserSaveController";
@@ -22,6 +19,7 @@ import {LoginControllerV6} from "../v6/controller/LoginControllerV6";
 import {LoginFailControllerV4} from "../v4/controller/LoginFailControllerV4";
 import {LoginFormController} from "../v4/controller/LoginFormController";
 import {UserListControllerV4} from "../v4/controller/UserListControllerV4";
+import {HomeControllerV6} from "../v6/controller/HomeControllerV6";
 
 
 /**
@@ -42,9 +40,9 @@ export class FrontControllerServletV5 {
     constructor() {
         this.initMemberController();
 
-        this.handlerMappingMap.set("/", new HomeController());
-        this.handlerMappingMap.set("/index", new HomeController());
-        this.handlerMappingMap.set("/index.html", new HomeController());
+        this.handlerMappingMap.set("/", new HomeControllerV6());
+        this.handlerMappingMap.set("/index", new HomeControllerV6());
+        this.handlerMappingMap.set("/index.html", new HomeControllerV6());
 
         this.handlerMappingMap.set("/user/form", new UserFormController());
         this.handlerMappingMap.set("/user/save", new UserSaveController());
@@ -71,7 +69,7 @@ export class FrontControllerServletV5 {
         this.handlerMappingMap.set("/front-controller/v5/v4/" + "members", new MemberListControllerV4());
     }
 
-    public service(req : Request, res : Response){
+    public async service(req : Request, res : Response){
         /**
          * 일단 any로 가져온다. (어떤 컨트롤러가 올지모름)
          */
@@ -83,7 +81,7 @@ export class FrontControllerServletV5 {
         }
 
         const adapter = this.getHandlerAdapter(handler);
-        const mv = adapter.handle(req,res,handler);
+        const mv = await adapter.handle(req,res,handler);
 
         /**
          * Controller에서 redirect:index 요청시

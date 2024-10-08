@@ -1,0 +1,44 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/memberList.css">
+</head>
+
+<body>
+<h1>hello, world!</h1>
+
+<nav class="navbar">
+    <a href="/public">HELLO. WEB!</a>
+    <ul class="nav-item-box">
+        <li>
+            <button onclick="location.href='/user/login/form'" class="button BoldS ">
+                <p class="">로그인/회원가입</p>
+            </button>
+        </li>
+    </ul>
+</nav>
+
+<section class="hero-box">
+    <p class="hero-subtitle">부스트캠프 백엔드 교육용 페이지</h1>
+    <h1 class="hero-title">HELLO. WEB! 입니다.</p>
+</section>
+
+<section class="board-box">
+    <p class="board-count">전체멤버<span>N</span>명</p>
+    <ul class="board-list-member" >
+        <li class="board-header-member">
+            <p class="board-header-nickname BordS">닉네임</p>
+            <p class="board-header-email BordS">이메일</p>
+            <p class="board-header-createdAt BordS">회원가입일</p>
+        </li>
+        <% members.forEach(function(member) { %>
+            <li class="board-item-member">
+                <p class="board-header-nickname BordS"><%= member.nickname %></p>
+                <p class="board-header-email BordS"><%= member.email %></p>
+                <p class="board-header-createdAt BordS"><%= member.createdAt %></p>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+
+</html>

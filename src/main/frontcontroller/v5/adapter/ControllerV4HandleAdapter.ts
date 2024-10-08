@@ -22,14 +22,14 @@ export class ControllerV4HandleAdapter implements MyHandlerAdapter {
         );
     }
 
-    handle(req: Request, res: Response , handler : any): ModelView {
+    async handle(req: Request, res: Response , handler : any) {
         const controller  = handler as ControllerV4;
 
         //컨트롤러가 req를 몰라도 되도록 Map에 req 정보를 담아서 넘김
         const paramMap : Map<string, string> = objectToMap(req.body);
         const model : Map<string, object> = new Map<string, object>();
 
-        const viewName = controller.process(paramMap, model);
+        const viewName = await controller.process(paramMap, model);
 
         const mv = new ModelView(viewName);
         mv.setModel(model); //set도 해줘야함!

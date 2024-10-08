@@ -1,12 +1,27 @@
+import {Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn} from "typeorm";
+
+@Entity("members")
 export class Member {
 
-    private id: number; // DB의 AutoIncrement Id
-    private nickname: string;
-    private password: string;
-    private email: string;
+    @PrimaryGeneratedColumn()
+    id: number; // DB의 AutoIncrement Id
 
-    constructor(id: number, email : string , nickname: string, password : string) {
-        this.id = id;
+    @Column()
+    nickname: string;
+
+    @Column()
+    password: string;
+
+    @Column({ unique: true })
+    email: string;
+
+    @CreateDateColumn() //밀리초 저장안함.
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
+
+    constructor(email : string , nickname: string, password : string) {
         this.nickname = nickname;
         this.password = password;
         this.email = email;
