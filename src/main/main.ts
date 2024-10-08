@@ -8,7 +8,7 @@ import {AppDataSource} from "./repositories/AppDataSource";
 async function main() {
     const app = new Server();
 
-    AppDataSource.initialize().
+    AppDataSource.getInstance().initialize().
     then(() => {
         console.log("Data Source has been initialized!")
     }).catch((err) => {

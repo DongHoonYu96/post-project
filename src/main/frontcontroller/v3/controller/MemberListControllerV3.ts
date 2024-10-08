@@ -1,6 +1,6 @@
 import {ControllerV3} from "../ControllerV3";
 import {ModelView} from "../../ModelView";
-import {MemberRepository} from "../../../domain/member/MemberRepository";
+import {MemoryMemberRepository} from "../../../domain/member/MemoryMemberRepository";
 
 interface Member {
     id: number;
@@ -10,7 +10,7 @@ interface Member {
 
 export class MemberListControllerV3 implements ControllerV3{
 
-    private memberRepository: MemberRepository = MemberRepository.getInstance();
+    private memberRepository: MemoryMemberRepository = MemoryMemberRepository.getInstance();
 
     process(paramMap: Map<string, string>): ModelView {
         const members = this.memberRepository.findAll();

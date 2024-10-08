@@ -1,15 +1,14 @@
 import { Member } from "./Member";
+import { AppDataSource } from "../../repositories/AppDataSource";
+import { Repository } from "typeorm";
 
 export class MemberRepository {
     private static instance: MemberRepository | null = null;
-    // private store: Map<number, Member> = new Map();
-    private store: Map<string, Member> = new Map();
-    private sequence: number = 0;
+    private memberRepository: Repository<Member>;
 
-    /**
-     * 생성자를 private으로 선언하여 외부에서 직접 인스턴스를 생성할 수 없게 합니다.
-     */
-    private constructor() {}
+    private constructor() {
+        this.memberRepository = AppDataSource.getInstance().getRepository(Member);
+    }
 
     /**
      * MemberRepository의 유일한 인스턴스를 반환합니다.
@@ -26,39 +25,38 @@ export class MemberRepository {
     /**
      * 새로운 Member를 저장소에 추가합니다.
      * @param {Member} member - 저장할 Member 객체
-     * @returns {number} 저장된 Member
+     * @returns {Promise<Member>} 저장된 Member
      */
-    public save(member: Member): Member {
-        member.setId(++this.sequence);
-
-        if(this.store.has(member.getEmail())){
-            console.log('이미 존재하는 email 입니다.' + member.getEmail());
-            return;
-            // throw new Error('이미 존재하는 email 입니다.' + member.getEmail());
+    public async save(member: Member): Promise<Member> {
+        try {
+            return await this.memberRepository.save(member);
+        } catch (error) {
+            if (error.code === 'ER_DUP_ENTRY') {
+                console.log('이미 존재하는 email 입니다.' + member.getEmail());
+                throw new Error('이미 존재하는 email 입니다.' + member.getEmail());
+            }
+            throw error;
         }
-
-        this.store.set(member.getEmail(), member);
-        return member;
     }
 
     /**
-     * ID로 Member를 조회합니다.
-     * @param {number} id - 조회할 Member의 ID
-     * @returns {Member | undefined} 조회된 Member 객체 또는 undefined
+     * Email로 Member를 조회합니다.
+     * @param {string} email - 조회할 Member의 Email
+     * @returns {Promise<Member | null>} 조회된 Member 객체 또는 null
      */
-    // public findById(id: number): Member | undefined {
-    //     return this.store.get(id);
-    // }
+    public async findByEmail(email: string): Promise<Member | null> {
+        return await this.memberRepository.findOne({ where: { email } });
+    }
 
-    public findByEmail(email: string): Member | undefined {
-        return this.store.get(email);
+    public async findById(id: number): Promise<Member | null> {
+        return await this.memberRepository.findOneBy({ id });
     }
 
     /**
      * 모든 Member를 반환합니다.
-     * @returns {Member[]} 저장된 모든 Member 객체의 배열
+     * @returns {Promise<Member[]>} 저장된 모든 Member 객체의 배열
      */
-    public findAll(): Member[] {
-        return Array.from(this.store.values());
+    public async findAll(): Promise<Member[]> {
+        return await this.memberRepository.find();
     }
 }

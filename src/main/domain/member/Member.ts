@@ -4,19 +4,18 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 export class Member {
 
     @PrimaryGeneratedColumn()
-    private id: number; // DB의 AutoIncrement Id
+    id: number; // DB의 AutoIncrement Id
 
     @Column()
-    private nickname: string;
+    nickname: string;
 
     @Column()
-    private readonly password: string;
+    password: string;
 
     @Column({ unique: true })
-    private readonly email: string;
+    email: string;
 
-    constructor(id: number, email : string , nickname: string, password : string) {
-        this.id = id;
+    constructor(email : string , nickname: string, password : string) {
         this.nickname = nickname;
         this.password = password;
         this.email = email;

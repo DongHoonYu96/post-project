@@ -1,12 +1,12 @@
 import {ControllerV6} from "../ControllerV6";
-import {MemberRepository} from "../../../domain/member/MemberRepository";
+import {MemoryMemberRepository} from "../../../domain/member/MemoryMemberRepository";
 import {Request} from "../../../was/request";
 import {Response} from "../../../was/response";
 import {SessionManager} from "../../../utils/SessionManager";
 
 export class LoginControllerV6 implements ControllerV6{
 
-    private memberRepository: MemberRepository = MemberRepository.getInstance();
+    private memberRepository: MemoryMemberRepository = MemoryMemberRepository.getInstance();
     private sessionMgr : SessionManager = SessionManager.getInstance();
 
     process(req: Request, res: Response, paramMap: Map<string, string>, model: Map<string, object>): string {
