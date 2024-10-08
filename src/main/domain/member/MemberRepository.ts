@@ -33,9 +33,9 @@ export class MemberRepository {
         } catch (error) {
             if (error.code === 'ER_DUP_ENTRY') {
                 console.log('이미 존재하는 email 입니다.' + member.getEmail());
-                throw new Error('이미 존재하는 email 입니다.' + member.getEmail());
+                // throw new Error('이미 존재하는 email 입니다.' + member.getEmail());
             }
-            throw error;
+            // throw error;
         }
     }
 
