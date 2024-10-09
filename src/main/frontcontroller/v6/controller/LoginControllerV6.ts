@@ -1,5 +1,4 @@
 import {ControllerV6} from "../ControllerV6";
-import {MemoryMemberRepository} from "../../../domain/member/MemoryMemberRepository";
 import {Request} from "../../../was/request";
 import {Response} from "../../../was/response";
 import {SessionManager} from "../../../utils/SessionManager";
@@ -25,7 +24,11 @@ export class LoginControllerV6 implements ControllerV6{
         }
 
         this.sessionMgr.createSession(findMember, res);
-        return "redirect:index"; //성공시 홈으로 보냄
+        const redirectURL = req.query['redirectURL'];
+        if(redirectURL)
+            return "redirect:"+redirectURL; //기존요청 페이지가 있으면, 그곳으로 보내주기!
+        else
+            return "redirect:index";//성공시 홈으로 보냄 (기본값)
     }
 
     version6() {

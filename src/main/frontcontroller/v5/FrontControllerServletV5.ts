@@ -20,6 +20,7 @@ import {LoginFailControllerV4} from "../v4/controller/LoginFailControllerV4";
 import {LoginFormController} from "../v4/controller/LoginFormController";
 import {UserListControllerV4} from "../v4/controller/UserListControllerV4";
 import {HomeControllerV6} from "../v6/controller/HomeControllerV6";
+import {LoginFormControllerV6} from "../v6/controller/LoginFormControllerV6";
 
 
 /**
@@ -47,7 +48,7 @@ export class FrontControllerServletV5 {
         this.handlerMappingMap.set("/user/form", new UserFormController());
         this.handlerMappingMap.set("/user/save", new UserSaveController());
 
-        this.handlerMappingMap.set("/user/login/form", new LoginFormController());
+        this.handlerMappingMap.set("/user/login/form", new LoginFormControllerV6());
         this.handlerMappingMap.set("/user/login", new LoginControllerV6());
         this.handlerMappingMap.set("/user/login_failed", new LoginFailControllerV4());
 
@@ -98,7 +99,10 @@ export class FrontControllerServletV5 {
             const [_, temp ] = viewName.split(":");
             viewName = temp;
             view = this.viewResolver(viewName);
-            res.status(302).header("Location","http://localhost:3000/" + viewName);
+            // res.status(302).header("Location","http://localhost:3000/" + viewName);
+            res.status(302).redirect(viewName);
+            req.isEnd=true;
+            return;
         }
 
         view.renderEjs(mv.getModel(),req,res);

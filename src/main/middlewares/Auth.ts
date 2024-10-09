@@ -21,7 +21,7 @@ export function authMiddleware(req: Request, res: Response, next): void {
             if (findCookieValue === null) {
                 console.log(`미인증 사용자 요청 ${requestURI}`);
                 // 로그인으로 redirect
-                res.status(302).redirect('user/login/form');
+                res.status(302).redirect('/user/login/form?redirectURL='+requestURI);
                 req.isEnd=true;
                 return; // 미인증 사용자는 다음 미들웨어로 진행하지 않고 끝!
             }
