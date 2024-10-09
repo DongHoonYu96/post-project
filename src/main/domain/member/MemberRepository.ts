@@ -49,7 +49,7 @@ export class MemberRepository {
     }
 
     public async findById(id: number): Promise<Member | null> {
-        return await this.memberRepository.findOneBy({ id });
+        return await this.memberRepository.findOne({ where:  { id } });
     }
 
     /**
