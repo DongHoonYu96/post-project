@@ -5,7 +5,10 @@
 - 컨트롤러 구조
   ![image](https://github.com/user-attachments/assets/7414bf56-1cae-4a92-b25d-f64535ec72ba)
 
-+ 추후 구조 확대 가능
+- ERD<br>
+  ![image](https://github.com/user-attachments/assets/7d068c99-ff80-4c89-9f42-8eeb5fe886ff)
+
+  
 
 # API 명세서
 ## Auth

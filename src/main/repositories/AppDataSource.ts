@@ -1,6 +1,8 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
 import {Member} from "../domain/member/Member";
+import {Post} from "../domain/post/Post";
+import {Comment} from "../domain/comment/Comment";
 
 export class AppDataSource {
     private static instance: DataSource | null = null;
@@ -18,7 +20,7 @@ export class AppDataSource {
                 database: process.env.DB_NAME,
                 synchronize: true,
                 logging: true,
-                entities: [Member],
+                entities: [Member,Post,Comment],
                 migrations: [],
                 subscribers: [],
             });

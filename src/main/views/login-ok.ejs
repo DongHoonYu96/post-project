@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>가입완료</title>
+    <link rel="stylesheet" href="../views/css/main.css" />
+</head>
+<body class="main-block">
+<div class="title-block">
+    <div class="title">가입이 완료되었습니다!</div>
+</div>
+    <div class="input-form">
+        <div class="member-info-form">
+            <div class="info-block">
+                <label class="info-label">이메일</label>
+                <div class="info-data" aria-readonly="true"><%= member.email %></div>
+            </div>
+            <div class="info-block">
+                <label class="info-label">닉네임</label>
+                <div class="info-data" aria-readonly="true"><%= member.nickname %></div>
+            </div>
+        </div>
+        <div class="login-button-block">
+            <button class="button-long login" onclick="location.href='/user/login/form'">지금 로그인하기</button>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>

@@ -12,6 +12,16 @@ import {Response} from "../was/response";
  * }
  */
 export function MyCookieParser(req : Request, res: Response, next)  {
+    /**
+     * 쿠키가 없는경우 예외처리
+     * 파싱하지 않아야 에러가안남.
+     */
+    const b = !req.get('cookie');
+    if(b) {
+        next();
+        return;
+    }
+
     const cookies: { [key: string]: string } = {};
 
     const cookieString = req.get('cookie');
