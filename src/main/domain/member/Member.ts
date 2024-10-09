@@ -1,4 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn, OneToMany} from "typeorm";
+import {Post} from "../post/Post";
 
 @Entity("members")
 export class Member {
@@ -20,6 +21,9 @@ export class Member {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @OneToMany(() => Post, post => post.member)
+    posts: Post[];
 
     constructor(email : string , nickname: string, password : string) {
         this.nickname = nickname;
