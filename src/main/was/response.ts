@@ -115,7 +115,7 @@ export class Response {
             const ext = path.extname(viewPath).slice(1);
             const mimeType = COMMON_MIME_TYPES[ext] || 'application/octet-stream';
             const maxAge = cachePolicy[ext] || 'public, max-age=3600';
-            res.setCacheControl(maxAge);
+            // res.setCacheControl(maxAge);
 
             const renderedHtml = await this.renderEjsTemplate(viewPath, pageData);
 
@@ -164,7 +164,7 @@ export class Response {
     }
 
     public redirect(path: string) {
-        this.header("Location","http://localhost:3000/" + path);
+        this.header("Location","http://localhost:3000" + path);
         this.send();
     }
 
