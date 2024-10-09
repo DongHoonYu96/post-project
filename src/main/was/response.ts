@@ -164,6 +164,9 @@ export class Response {
     }
 
     public redirect(path: string) {
+        if(!path.startsWith('/')){
+            path = '/'+path;
+        }
         this.header("Location","http://localhost:3000" + path);
         this.send();
     }
