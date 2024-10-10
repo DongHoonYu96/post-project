@@ -4,7 +4,7 @@ import {Post} from "./Post";
 
 export class PostRepository {
     private static instance: PostRepository | null = null;
-    private postRepository: Repository<Post>;
+    private readonly postRepository: Repository<Post>;
 
     private constructor() {
         this.postRepository = AppDataSource.getInstance().getRepository(Post);
@@ -15,11 +15,15 @@ export class PostRepository {
      * 인스턴스가 없으면 새로 생성하여 반환합니다.
      * @returns {MemberRepository} MemberRepository의 유일한 인스턴스
      */
-    public static getInstance(): PostRepository {
+    public static getInstance() {
         if (PostRepository.instance === null) {
             PostRepository.instance = new PostRepository();
         }
         return PostRepository.instance;
+    }
+
+    public getRepo(){
+        return this.postRepository;
     }
 
     /**
@@ -59,4 +63,5 @@ export class PostRepository {
             throw error; // 또는 에러를 처리하고 false를 반환할 수 있습니다.
         }
     }
+
 }
