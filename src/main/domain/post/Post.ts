@@ -21,8 +21,8 @@ export class Post {
     @Column()
     content: string;
 
-    @Column()
-    views: string;
+    @Column({ default: 0 })
+    views: number;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -35,4 +35,10 @@ export class Post {
 
     @OneToMany(() => Comment, comment => comment.post)
     comments: Comment[];
+
+    constructor(title : string, content : string, member : Member) {
+        this.title = title;
+        this.content = content;
+        this.member = member;
+    }
 }

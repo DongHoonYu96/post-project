@@ -13,7 +13,7 @@ function isLoginCheckPath(url: string): boolean {
 }
 
 export function authMiddleware(req: Request, res: Response, next): void {
-    const requestURI: string = req.path;
+    const requestURI = req.path;
     try {
         console.log(`인증 체크 필터 시작 ${requestURI}`);
         if (isLoginCheckPath(requestURI)) {

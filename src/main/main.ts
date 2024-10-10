@@ -4,6 +4,7 @@ import {authMiddleware} from "./middlewares/Auth";
 import {MyCookieParser} from "./middlewares/MyCookieParser";
 import "dotenv/config";
 import {AppDataSource} from "./repositories/AppDataSource";
+import {MakeUser2Req} from "./middlewares/MakeUser2Req";
 
 async function main() {
     const app = new Server();
@@ -17,7 +18,8 @@ async function main() {
 
     app.use(logger);
     app.use(MyCookieParser);
-    // app.use(authMiddleware);
+    app.use(authMiddleware);
+    app.use(MakeUser2Req);
 
     const port = 3000;
 

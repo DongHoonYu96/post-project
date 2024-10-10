@@ -24,6 +24,7 @@ import {LoginFormControllerV6} from "../v6/controller/LoginFormControllerV6";
 import {UserSaveAfterControllerV6} from "../v6/controller/UserSaveAfterControllerV6";
 import {LogOutControllerV6} from "../v6/controller/LogOutControllerV6";
 import {PostFormControllerV4} from "../v4/controller/PostFormControllerV4";
+import {PostSaveControllerV6} from "../v6/controller/PostSaveControllerV6";
 
 
 /**
@@ -60,6 +61,7 @@ export class FrontControllerServletV5 {
         this.handlerMappingMap.set("/user/logout", new LogOutControllerV6());
 
         this.handlerMappingMap.set("/post/form", new PostFormControllerV4());
+        this.handlerMappingMap.set("/post/save", new PostSaveControllerV6());
 
 
         this.handlerAdapters.push(new ControllerV3HandleAdapter());
