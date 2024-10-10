@@ -21,4 +21,10 @@ export class Comment {
 
     @ManyToOne(() => Post, post => post.comments)
     post: Post;
+
+    constructor(member : Member, post : Post, content : string) {
+        this.member = member;
+        this.post=post;
+        this.content=content;
+    }
 }

@@ -171,3 +171,97 @@ body {
         font-size: 0.9rem;
     }
 }
+
+.comment-form-container {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.new-comment-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-info {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.new-comment-form textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.new-comment-form button {
+    padding: 8px 16px;
+    background-color: #4362D0;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.new-comment-form button:hover {
+    background-color: #3451A5;
+}
+
+.post-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px 0;
+    border-top: 1px solid #e0e0e0;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-button {
+    padding: 8px 16px;
+    background-color: #4362D0;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+    background-color: #e0e0e0;
+}
+
+.list-button {
+    margin-left: auto;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 600px) {
+    .post-navigation {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nav-buttons, .list-button {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .list-button {
+        margin-left: 0;
+    }
+}

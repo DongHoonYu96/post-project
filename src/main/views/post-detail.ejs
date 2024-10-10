@@ -35,32 +35,42 @@
 
     <div class="comments-container">
         <h2>댓글</h2>
-        <div class="comment">
-            <div class="comment-info">
-                <span class="comment-author">댓글 작성자1</span>
-                <span class="comment-date">2023-10-11</span>
+        <% post.comments.forEach(function(comment) { %>
+            <div class="comment">
+                <div class="comment-info">
+                    <span class="comment-author"><%=comment.member.nickname%></span>
+                    <span class="comment-date"><%=comment.createdAt.toLocaleString()%></span>
+                </div>
+                <div class="comment-content">
+                    <%=comment.content%>
+                </div>
             </div>
-            <div class="comment-content">
-                첫 번째 댓글 내용입니다.
-            </div>
-        </div>
-        <div class="comment">
-            <div class="comment-info">
-                <span class="comment-author">댓글 작성자2</span>
-                <span class="comment-date">2023-10-12</span>
-            </div>
-            <div class="comment-content">
-                두 번째 댓글 내용입니다.
-            </div>
-        </div>
-        <!-- 추가 댓글들... -->
+        <% }); %>
     </div>
 
-    <!-- 새 댓글 작성 폼 -->
-    <form class="new-comment-form">
-        <textarea placeholder="새 댓글을 작성하세요" required></textarea>
-        <button type="submit">댓글 작성</button>
-    </form>
+    <div class="comment-form-container">
+        <form action="/comment/save" method="POST" class="new-comment-form">
+            <div class="user-info">
+                <%= post.member.nickname %>
+            </div>
+            <textarea name="content" placeholder="댓글을 입력하세요" required></textarea>
+            <input type="hidden" name="postId" value="<%= post.id %>">
+            <input type="hidden" name="memberId" value="<%= post.member.id %>">
+            <div class="button-container">
+                <button type="submit">댓글 작성</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="post-navigation">
+        <div class="nav-buttons">
+            <a href="/post/3" class="nav-button">이전글 : 미완성</a>
+            <a href="/post/4" class="nav-button">다음글 : 미완성</a>
+        </div>
+        <div class="list-button">
+            <a href="/index" class="nav-button">목록으로</a>
+        </div>
+    </div>
 </div>
 
 </body>

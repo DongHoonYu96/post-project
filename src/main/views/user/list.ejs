@@ -45,7 +45,7 @@
             <li class="board-item-member">
                 <p class="board-header-nickname BordS"><%= member.nickname %></p>
                 <p class="board-header-email BordS"><%= member.email %></p>
-                <p class="board-header-createdAt BordS"><%= member.createdAt %></p>
+                <p class="board-header-createdAt BordS"><%= member.createdAt.toLocaleString() %></p>
             </li>
         <% }); %>
     </ul>

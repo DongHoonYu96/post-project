@@ -4,10 +4,14 @@ import { Repository } from "typeorm";
 
 export class MemberRepository {
     private static instance: MemberRepository | null = null;
-    private memberRepository: Repository<Member>;
+    private readonly memberRepository: Repository<Member>;
 
     private constructor() {
         this.memberRepository = AppDataSource.getInstance().getRepository(Member);
+    }
+
+    public getRepo(){
+        return this.memberRepository;
     }
 
     /**
