@@ -16,24 +16,21 @@ export class CommentSaveControllerV6 implements ControllerV6{
 
     async process(req:Request, res: Response, paramMap: Map<string, string>, model: Map<string, object>) {
         const postId = +paramMap.get('postId');
-        const memberId= +paramMap.get('memberId');
         const content = paramMap.get('content');
 
-        if(!postId || !content || !memberId){
+        if(!postId || !content ){
             return "redirect:error";
         }
+        const loginUser = req.user;
 
-        const findMember = await this.memberRepository.findOne({
-            where : {id : memberId},
-        });
         const findPost = await this.postRepository.findOne({
             where: { id: postId },
         });
-        if(!findMember || !findPost){
+        if(!loginUser || !findPost){
             return "redirect:error";
         }
 
-        const comment = new Comment(findMember, findPost , content);
+        const comment = new Comment(loginUser, findPost , content);
         try{
             await this.commentRepository.save(comment);
             //해당 post의 상세 페이지로 이동

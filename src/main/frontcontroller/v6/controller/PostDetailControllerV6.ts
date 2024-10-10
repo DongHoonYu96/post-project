@@ -31,6 +31,7 @@ export class PostDetailControllerV6 implements ControllerV6{
                 relations: ['member', 'comments', 'comments.member'],
             });
             model.set("post",findPost);
+            model.set("member",req.user);
             return "post-detail"
         }
         catch(e){

@@ -30,7 +30,7 @@
     </div>
 
     <div class="comment-count">
-        댓글 수: 3
+        댓글 수: <%=post.comments.length%>
     </div>
 
     <div class="comments-container">
@@ -51,7 +51,7 @@
     <div class="comment-form-container">
         <form action="/comment/save" method="POST" class="new-comment-form">
             <div class="user-info">
-                <%= post.member.nickname %>
+                <%= member.nickname %>
             </div>
             <textarea name="content" placeholder="댓글을 입력하세요" required></textarea>
             <input type="hidden" name="postId" value="<%= post.id %>">

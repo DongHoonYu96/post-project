@@ -18,7 +18,7 @@ async function main() {
 
     app.use(logger);
     app.use(MyCookieParser);
-    // app.use(authMiddleware);
+    app.use(authMiddleware);
     app.use(MakeUser2Req);
 
     const port = 3000;
