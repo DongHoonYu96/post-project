@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>글쓰기</title>
+    <link rel="stylesheet" href="../css/post-form.css">
+</head>
+<body>
+<nav class="navbar">
+    <a href="/">HELLO. WEB!</a>
+    <ul class="nav-item-box">
+        <li><button onclick="location.href='/user/list'" class="button">멤버리스트</button></li>
+        <li><button onclick="location.href='/user/mypage'" class="button">마이페이지</button></li>
+        <li><button onclick="location.href='/user/logout'" class="button">로그아웃</button></li>
+    </ul>
+</nav>
+
+<div class="title-block">
+    <h1 class="title">글쓰기</h1>
+</div>
+
+<form action="/post/save" method="POST" class="writing-form" id="writing-form">
+    <div class="input-form">
+        <div class="input-block">
+            <label for="title" class="input-label">제목</label>
+            <input
+                    class="input-data title-input"
+                    type="text"
+                    id="title"
+                    name="title"
+                    required
+                    placeholder="글의 제목을 입력하세요"
+            />
+        </div>
+        <div class="input-block">
+            <label for="content" class="input-label">내용</label>
+            <textarea
+                    class="input-data content-input"
+                    id="content"
+                    name="content"
+                    required
+                    placeholder="글의 내용을 입력하세요"
+            ></textarea>
+        </div>
+        <div class="submit-button-block">
+            <button type="submit" class="button-long submit">작성완료</button>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>

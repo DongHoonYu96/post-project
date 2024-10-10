@@ -8,7 +8,7 @@
 <h1>hello, world!</h1>
 
 <nav class="navbar">
-    <a href="/public">HELLO. WEB!</a>
+    <a href="/">HELLO. WEB!</a>
     <ul class="nav-item-box">
         <% if (typeof member !== 'undefined' && member !== null) { %>
             <li>
@@ -83,6 +83,28 @@
             </a>
         </li>
     </ul>
+
+    <nav class="navbar">
+        <% if (typeof member !== 'undefined' && member !== null) { %>
+            <a ><1, 2, 3, 4, 5></a>
+        <% } else { %>
+        <% } %>
+        <ul class="nav-item-box">
+        <% if (typeof member !== 'undefined' && member !== null) { %>
+            <li>
+                <button onclick="location.href='/user/mypage'" class="button BoldS">
+                    <p>검색어를 입력하세요</p>
+                </button>
+            </li>
+            <li>
+                <button onclick="location.href='/user/logout'" class="button BoldS">
+                    <p>글쓰기</p>
+                </button>
+            </li>
+        <% } else { %>
+        <% } %>
+        </ul>
+    </nav>
 </body>
 
 </html>

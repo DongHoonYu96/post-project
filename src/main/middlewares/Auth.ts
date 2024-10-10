@@ -7,6 +7,7 @@ const whiteList: string[] = ['/index','/index2.html','/user/login','/user/form',
 const sessionManager: SessionManager = SessionManager.getInstance();
 
 function isLoginCheckPath(url: string): boolean {
+    if(url.endsWith('.css') || url.endsWith('.js')) return false;
     if(url=='/') return false;
     return !whiteList.some(path => url.startsWith(path));
 }

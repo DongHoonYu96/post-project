@@ -59,7 +59,7 @@ export class SessionManager {
      * @returns The cookie value if found, null otherwise.
      */
     public findCookie(req: Request, cookieName: string) {
-        if(req.cookies === null){
+        if(!req.cookies){
             return null;
         }
 
