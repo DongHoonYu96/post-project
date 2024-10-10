@@ -59,28 +59,14 @@
                 <p class="board-header-views BordS">조회수</p>
             </div>
         <li class="board-item">
-            <a href="/board/1" class="board-link">
-                <p class="board-item-title BordR">게시글 제목</p>
-                <p class="board-item-author BordR">작성자</p>
-                <p class="board-item-date BordR">작성일자</p>
-                <p class="board-item-views BordR">조회수</p>
-            </a>
-        </li>
-        <li class="board-item">
-            <a href="/board/1" class="board-link">
-                <p class="board-item-title BordR">게시글 제목</p>
-                <p class="board-item-author BordR">작성자</p>
-                <p class="board-item-date BordR">작성일자</p>
-                <p class="board-item-views BordR">조회수</p>
-            </a>
-        </li>
-        <li class="board-item">
-            <a href="/board/1" class="board-link">
-                <p class="board-item-title BordR">게시글 제목</p>
-                <p class="board-item-author BordR">작성자</p>
-                <p class="board-item-date BordR">작성일자</p>
-                <p class="board-item-views BordR">조회수</p>
-            </a>
+            <% posts.forEach(function(post) { %>
+                <a href="/post/<%= post.id %>" class="board-link">
+                    <p class="board-item-title BordR"><%= post.title%></p>
+                    <p class="board-item-author BordR"><%= post.member.nickname%></p>
+                    <p class="board-item-date BordR"><%= post.createdAt.toLocaleString()%></p>
+                    <p class="board-item-views BordR"><%= post.views%></p>
+                </a>
+            <% }); %>
         </li>
     </ul>
 
@@ -97,7 +83,7 @@
                 </button>
             </li>
             <li>
-                <button onclick="location.href='/user/logout'" class="button BoldS">
+                <button onclick="location.href='/post/form'" class="button BoldS">
                     <p>글쓰기</p>
                 </button>
             </li>
