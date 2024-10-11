@@ -34,7 +34,7 @@ class Request implements ParsedRequest {
     private parseRequest(rawHeaders: string): void {
         const [mainLine, ...headerLines] = rawHeaders.split(CRLF);
         const [method, path, httpVersion] = mainLine.split(' ');
-        const parsedUrl = parseUrl(path, true) as UrlWithParsedQuery;
+        const parsedUrl = parseUrl(path as string, true) as UrlWithParsedQuery;
 
         this.httpVersion = httpVersion;
         this.method = method;

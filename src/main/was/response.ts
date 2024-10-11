@@ -1,5 +1,5 @@
 import { Socket } from 'net';
-import {statusCode, HTTP_VERSIONS, COMMON_MIME_TYPES, cachePolicy} from './const/httpConsts';
+import {statusCode, HTTP_VERSIONS, COMMON_MIME_TYPES, cachePolicy, PROTOCOL} from './const/httpConsts';
 import {stat} from "fs/promises";
 import * as fs from "fs";
 import * as path from "path";
@@ -16,13 +16,15 @@ export class Response {
     private statusCode: StatusCode;
     private statusMessage: string;
     private body: string | Buffer;
+    private req : Request;
 
-    constructor(socket: Socket) {
+    constructor(socket: Socket ,req: Request) {
         this.socket = socket;
         this.headers = {};
         this.statusCode = 200;
         this.statusMessage = 'OK';
         this.body = '';
+        this.req=req;
     }
 
     public status(code: StatusCode): this {
@@ -167,7 +169,15 @@ export class Response {
         if(!path.startsWith('/')){
             path = '/'+path;
         }
-        this.header("Location","http://localhost:3000" + path);
+        // 절대 URL인 경우 그대로 사용
+        if (path.startsWith('http://') || path.startsWith('https://')) {
+            this.header("Location", path);
+        } else {
+            // 상대 경로인 경우, 현재 호스트를 기반으로 URL 구성
+            const host = this.req.headers.get('host');
+            const fullUrl = `${PROTOCOL.HTTP}://${host}${path}`;
+            this.header("Location", fullUrl);
+        }
         this.send();
     }
 

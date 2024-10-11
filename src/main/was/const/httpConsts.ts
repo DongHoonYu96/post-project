@@ -66,3 +66,8 @@ export const statusCode = {
     404: 'NOT FOUND',
     500: 'INTERNAL SERVER ERROR',
 } as const;
+
+export const PROTOCOL = {
+    HTTP : 'http',
+    HTTPS:'https'
+} as const;

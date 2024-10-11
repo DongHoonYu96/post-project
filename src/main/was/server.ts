@@ -150,7 +150,7 @@ class Server {
 
     private async handleRequest(headers: string, body: Buffer, socket: net.Socket): Promise<void> {
         const req = new Request(headers, body);
-        const res = new Response(socket);
+        const res = new Response(socket, req);
 
         try {
             this.runMiddleware(this.middlewares, 0, null, req, res);
