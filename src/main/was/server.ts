@@ -152,18 +152,30 @@ class Server {
         const req = new Request(headers, body);
         const res = new Response(socket);
 
-        this.runMiddleware(this.middlewares, 0, null, req, res);
+        try {
+            this.runMiddleware(this.middlewares, 0, null, req, res);
 
-        if(req.isEnd) return;
+            if (req.isEnd) return;
 
-        await StaticServe(req,res);
+            await StaticServe(req, res);
 
-        if(req.isEnd) return;
+            if (req.isEnd) return;
 
-        const frontControllerServletV5 = new FrontControllerServletV5();
-        frontControllerServletV5.service(req,res);
+            const frontControllerServletV5 = new FrontControllerServletV5();
+            await frontControllerServletV5.service(req, res);
 
-        //todo : 404 Not Found
+            req.isEnd=true;
+        }
+        catch (e){
+            console.log(e);
+            res.status(500).send('Internal Server Error');
+            req.isEnd=true;
+        }
+        finally {
+            if(!req.isEnd){
+                res.status(404).send('Not Found');
+            }
+        }
     }
 
     private async sendFile(filePath: string, req : Request,  res: Response): Promise<void> {
