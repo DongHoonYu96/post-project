@@ -51,16 +51,7 @@ export class FrontControllerServletV5 {
         this.handlerMappingMap.set("/index", new HomeControllerV6());
         this.handlerMappingMap.set("/index.html", new HomeControllerV6());
 
-        this.handlerMappingMap.set("/user/form", new UserFormController());
-        this.handlerMappingMap.set("/user/save", new UserSaveController());
-
-        this.handlerMappingMap.set("/user/login/form", new LoginFormControllerV6());
-        this.handlerMappingMap.set("/user/login", new LoginControllerV6());
-        this.handlerMappingMap.set("/user/login-failed", new LoginFailControllerV4());
-        this.handlerMappingMap.set("/user/login-ok", new UserSaveAfterControllerV6());
-
-        this.handlerMappingMap.set("/user/list", new UserListControllerV4());
-        this.handlerMappingMap.set("/user/logout", new LogOutControllerV6());
+        this.initUserController();
 
         this.handlerMappingMap.set("/post/form", new PostFormControllerV4());
         this.handlerMappingMap.set("/post/save", new PostSaveControllerV6());
@@ -71,6 +62,19 @@ export class FrontControllerServletV5 {
         this.handlerAdapters.push(new ControllerV3HandleAdapter());
         this.handlerAdapters.push(new ControllerV4HandleAdapter());
         this.handlerAdapters.push(new ControllerV6HandleAdapter());
+    }
+
+    private initUserController() {
+        this.handlerMappingMap.set("/user/form", new UserFormController());
+        this.handlerMappingMap.set("/user/save", new UserSaveController());
+
+        this.handlerMappingMap.set("/user/login/form", new LoginFormControllerV6());
+        this.handlerMappingMap.set("/user/login", new LoginControllerV6());
+        this.handlerMappingMap.set("/user/login-failed", new LoginFailControllerV4());
+        this.handlerMappingMap.set("/user/login-ok", new UserSaveAfterControllerV6());
+
+        this.handlerMappingMap.set("/user/list", new UserListControllerV4());
+        this.handlerMappingMap.set("/user/logout", new LogOutControllerV6());
     }
 
     private initMemberController() {
