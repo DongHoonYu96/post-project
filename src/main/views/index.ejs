@@ -8,7 +8,7 @@
 <h1>hello, world!</h1>
 
 <nav class="navbar">
-    <a href="/public">HELLO. WEB!</a>
+    <a href="/">HELLO. WEB!</a>
     <ul class="nav-item-box">
         <% if (typeof member !== 'undefined' && member !== null) { %>
             <li>
@@ -49,7 +49,7 @@
 </section>
 
 <section class="board-box">
-    <p class="board-count">전체글<span>N</span>개</p>
+    <p class="board-count">전체글 <span><%=posts.length%></span>개</p>
     <ul class="board-list">
         <li class="board-header">
             <div>
@@ -59,30 +59,38 @@
                 <p class="board-header-views BordS">조회수</p>
             </div>
         <li class="board-item">
-            <a href="/board/1" class="board-link">
-                <p class="board-item-title BordR">게시글 제목</p>
-                <p class="board-item-author BordR">작성자</p>
-                <p class="board-item-date BordR">작성일자</p>
-                <p class="board-item-views BordR">조회수</p>
-            </a>
-        </li>
-        <li class="board-item">
-            <a href="/board/1" class="board-link">
-                <p class="board-item-title BordR">게시글 제목</p>
-                <p class="board-item-author BordR">작성자</p>
-                <p class="board-item-date BordR">작성일자</p>
-                <p class="board-item-views BordR">조회수</p>
-            </a>
-        </li>
-        <li class="board-item">
-            <a href="/board/1" class="board-link">
-                <p class="board-item-title BordR">게시글 제목</p>
-                <p class="board-item-author BordR">작성자</p>
-                <p class="board-item-date BordR">작성일자</p>
-                <p class="board-item-views BordR">조회수</p>
-            </a>
+            <% posts.forEach(function(post) { %>
+                <a href="/post/<%= post.id %>" class="board-link">
+                    <p class="board-item-title BordR"><%= post.title%></p>
+                    <p class="board-item-author BordR"><%= post.member.nickname%></p>
+                    <p class="board-item-date BordR"><%= post.createdAt.toLocaleString()%></p>
+                    <p class="board-item-views BordR"><%= post.views%></p>
+                </a>
+            <% }); %>
         </li>
     </ul>
+
+    <nav class="navbar">
+        <% if (typeof member !== 'undefined' && member !== null) { %>
+            <a ><1, 2, 3, 4, 5></a>
+        <% } else { %>
+        <% } %>
+        <ul class="nav-item-box">
+        <% if (typeof member !== 'undefined' && member !== null) { %>
+            <li>
+                <button onclick="location.href='/user/mypage'" class="button BoldS">
+                    <p>검색어를 입력하세요</p>
+                </button>
+            </li>
+            <li>
+                <button onclick="location.href='/post/form'" class="button BoldS">
+                    <p>글쓰기</p>
+                </button>
+            </li>
+        <% } else { %>
+        <% } %>
+        </ul>
+    </nav>
 </body>
 
 </html>

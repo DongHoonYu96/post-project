@@ -8,7 +8,7 @@
 <h1>hello, world!</h1>
 
 <nav class="navbar">
-    <a href="/public">HELLO. WEB!</a>
+    <a href="/">HELLO. WEB!</a>
     <ul class="nav-item-box">
         <li>
             <button onclick="location.href='/user/list'" class="button BoldS">
@@ -34,7 +34,7 @@
 </section>
 
 <section class="board-box">
-    <p class="board-count">전체멤버<span>N</span>명</p>
+    <p class="board-count">전체멤버 <span><%=members.length%></span>명</p>
     <ul class="board-list-member" >
         <li class="board-header-member">
             <p class="board-header-nickname BordS">닉네임</p>
@@ -45,7 +45,7 @@
             <li class="board-item-member">
                 <p class="board-header-nickname BordS"><%= member.nickname %></p>
                 <p class="board-header-email BordS"><%= member.email %></p>
-                <p class="board-header-createdAt BordS"><%= member.createdAt %></p>
+                <p class="board-header-createdAt BordS"><%= member.createdAt.toLocaleString() %></p>
             </li>
         <% }); %>
     </ul>

@@ -7,12 +7,13 @@ const whiteList: string[] = ['/index','/index2.html','/user/login','/user/form',
 const sessionManager: SessionManager = SessionManager.getInstance();
 
 function isLoginCheckPath(url: string): boolean {
+    if(url.endsWith('.css') || url.endsWith('.js')) return false;
     if(url=='/') return false;
     return !whiteList.some(path => url.startsWith(path));
 }
 
 export function authMiddleware(req: Request, res: Response, next): void {
-    const requestURI: string = req.path;
+    const requestURI = req.path;
     try {
         console.log(`인증 체크 필터 시작 ${requestURI}`);
         if (isLoginCheckPath(requestURI)) {

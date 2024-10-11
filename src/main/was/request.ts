@@ -1,5 +1,6 @@
 import { parse as parseUrl, UrlWithParsedQuery } from 'url';
 import { CRLF } from './const/httpConsts';
+import {Member} from "../domain/member/Member";
 
 interface ParsedRequest {
     httpVersion: string;
@@ -8,6 +9,7 @@ interface ParsedRequest {
     query: { [key: string]: string | string[] };
     headers: Map<string, string>;
     body: any;
+    user : Member;
 }
 
 class Request implements ParsedRequest {
@@ -21,6 +23,7 @@ class Request implements ParsedRequest {
     public cookies : any;
     public isEnd : boolean;
     private rawBody: Buffer;
+    public user : Member;
 
     constructor(rawHeaders: string, rawBody: Buffer) {
         this.rawBody = rawBody;

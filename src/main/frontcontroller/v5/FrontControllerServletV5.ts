@@ -23,6 +23,10 @@ import {HomeControllerV6} from "../v6/controller/HomeControllerV6";
 import {LoginFormControllerV6} from "../v6/controller/LoginFormControllerV6";
 import {UserSaveAfterControllerV6} from "../v6/controller/UserSaveAfterControllerV6";
 import {LogOutControllerV6} from "../v6/controller/LogOutControllerV6";
+import {PostFormControllerV4} from "../v4/controller/PostFormControllerV4";
+import {PostSaveControllerV6} from "../v6/controller/PostSaveControllerV6";
+import {PostDetailControllerV6} from "../v6/controller/PostDetailControllerV6";
+import {CommentSaveControllerV6} from "../v6/controller/CommentSaveControllerV6";
 
 
 /**
@@ -37,7 +41,7 @@ import {LogOutControllerV6} from "../v6/controller/LogOutControllerV6";
 export class FrontControllerServletV5 {
 
     private readonly urlPatterns:string;
-    private handlerMappingMap : Map<String,any> = new Map<String, any>; //모든타입(any)의 핸들러(컨트롤러)지원
+    private handlerMappingMap : Map<string,any> = new Map<string, any>; //모든타입(any)의 핸들러(컨트롤러)지원
     private handlerAdapters : MyHandlerAdapter[]= []; // 핸들러 어댑터들 저장. 핸들러 어댑터 목록
 
     constructor() {
@@ -58,6 +62,11 @@ export class FrontControllerServletV5 {
         this.handlerMappingMap.set("/user/list", new UserListControllerV4());
         this.handlerMappingMap.set("/user/logout", new LogOutControllerV6());
 
+        this.handlerMappingMap.set("/post/form", new PostFormControllerV4());
+        this.handlerMappingMap.set("/post/save", new PostSaveControllerV6());
+        this.handlerMappingMap.set("/post/:id", new PostDetailControllerV6());
+
+        this.handlerMappingMap.set("/comment/save", new CommentSaveControllerV6());
 
         this.handlerAdapters.push(new ControllerV3HandleAdapter());
         this.handlerAdapters.push(new ControllerV4HandleAdapter());
@@ -78,8 +87,8 @@ export class FrontControllerServletV5 {
         /**
          * 일단 any로 가져온다. (어떤 컨트롤러가 올지모름)
          */
-        const reqURI : string = req.path;
-        const handler : any = this.handlerMappingMap.get(reqURI);
+        const reqURI = req.path;
+        const handler : any = this.findHandler(reqURI);
         if(!handler){
             res.status(404).send();
             return;
@@ -91,7 +100,7 @@ export class FrontControllerServletV5 {
         /**
          * Controller에서 redirect:index 요청시
          * res.302
-         * res.location = index.html
+         * res. Location = index.html
          */
         let viewName = mv.getViewName();
         let view: MyView = this.viewResolver(viewName); //물리이름이 들어간 MyView 객체 만들기
@@ -138,5 +147,54 @@ export class FrontControllerServletV5 {
         const viewPath: string = path.join(process.cwd(), 'dist', 'views',viewName+'.html');
         const view = new MyView(viewPath);
         return view;
+    }
+
+    /**
+     * 정확히 매핑됨 -> 그 컨트롤러 호출
+     * 정확한 매핑이없음 -> 패턴이 매칭되는게 있는지 탐색
+     * @param reqURI
+     * @private
+     */
+    private findHandler(reqURI: string): any {
+        // 정확한 매치 먼저 확인
+        if (this.handlerMappingMap.has(reqURI)) {
+            return this.handlerMappingMap.get(reqURI);
+        }
+
+        // 동적 라우트 매칭
+        for (const [pattern, handler] of this.handlerMappingMap.entries()) {
+            if (this.isPatternMatch(pattern, reqURI)) {
+                return handler;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     * @param pattern post/:id
+     * @param uri post/1
+     * @private
+     */
+    private isPatternMatch(pattern: string, uri: string): boolean {
+        const patternParts = pattern.split('/'); // [ post , :id ]
+        const uriParts = uri.split('/'); // [ post, 1 ]
+
+        if (patternParts.length !== uriParts.length) {
+            return false;
+        }
+
+        for (let i = 0; i < patternParts.length; i++) {
+            if (patternParts[i].startsWith(':')) {
+                continue; // 동적 부분은 항상 매치
+            }
+            if (patternParts[i] !== uriParts[i]) { //post, post와 같이 정적 부분이 매칭안되는경우 -> false ( 지금 컨트롤러와 매칭 x )
+                return false;
+            }
+        }
+
+        // 동적부분제외, 정적부분이 모두 매칭되는경우 매칭되는 컨트롤러이다.
+        return true;
     }
 }

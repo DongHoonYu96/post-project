@@ -1,0 +1,267 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* 네비게이션 바 스타일 */
+.navbar {
+    background-color: white;
+    color: black;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-item-box {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item-box li {
+    margin-left: 1rem;
+}
+
+.button {
+    background: #4362D0;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #3451A5;
+}
+
+/* 게시글 컨테이너 스타일 */
+.post-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.post-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.post-info {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.post-info span {
+    margin-right: 15px;
+}
+
+.post-content {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.comment-count {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.comments-container {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.comments-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.comment {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.comment-info {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.comment-author {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.comment-content {
+    font-size: 1rem;
+}
+
+.new-comment-form {
+    margin-top: 30px;
+}
+
+.new-comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    resize: vertical;
+}
+
+.new-comment-form button {
+    padding: 10px 20px;
+    background-color: #4362D0;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.new-comment-form button:hover {
+    background-color: #3451A5;
+}
+
+@media (max-width: 768px) {
+    .post-container {
+        padding: 15px;
+    }
+
+    .post-title {
+        font-size: 1.5rem;
+    }
+
+    .post-info, .comment-info {
+        font-size: 0.8rem;
+    }
+
+    .post-content, .comment-content {
+        font-size: 0.9rem;
+    }
+}
+
+.comment-form-container {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.new-comment-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-info {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.new-comment-form textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.new-comment-form button {
+    padding: 8px 16px;
+    background-color: #4362D0;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.new-comment-form button:hover {
+    background-color: #3451A5;
+}
+
+.post-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px 0;
+    border-top: 1px solid #e0e0e0;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-button {
+    padding: 8px 16px;
+    background-color: #4362D0;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+    background-color: #e0e0e0;
+}
+
+.list-button {
+    margin-left: auto;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 600px) {
+    .post-navigation {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nav-buttons, .list-button {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .list-button {
+        margin-left: 0;
+    }
+}
