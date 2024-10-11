@@ -71,3 +71,7 @@ export const PROTOCOL = {
     HTTP : 'http',
     HTTPS:'https'
 } as const;
+
+export const REDIRECT_ERROR = {
+    REDIRECT_URL : "redirect:error"
+} as const;

@@ -2,6 +2,7 @@ import {Member} from "../../../domain/member/Member";
 import {MemoryMemberRepository} from "../../../domain/member/MemoryMemberRepository";
 import {ControllerV4} from "../ControllerV4";
 import {MemberRepository} from "../../../domain/member/MemberRepository";
+import {REDIRECT_ERROR} from "../../../was/const/httpConsts";
 
 export class UserSaveController implements ControllerV4{
 
@@ -22,7 +23,7 @@ export class UserSaveController implements ControllerV4{
             return `redirect:/user/login-ok?email=${email}&nickname=${nickname}`;
         }
         catch(e){
-            return "redirect:error";
+            return REDIRECT_ERROR.REDIRECT_URL;
         }
 
 

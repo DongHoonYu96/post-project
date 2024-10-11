@@ -17,7 +17,7 @@ export class PostSaveControllerV6 implements ControllerV6{
         const content= paramMap.get('content');
 
         if(!title || !content || !req.user){
-            return "redirect:error";
+            return "REDIRECT_ERROR.REDIRECT_URL";
         }
 
         const post = new Post(title, content , req.user);
@@ -27,7 +27,7 @@ export class PostSaveControllerV6 implements ControllerV6{
             return "redirect:index"
         }
         catch(e){
-            return "redirect:error";
+            return "REDIRECT_ERROR.REDIRECT_URL";
         }
     }
 

@@ -22,7 +22,7 @@ export class PostDetailControllerV6 implements ControllerV6{
         const postId = +req.path.split('/').pop();
 
         if(!postId){
-            return "redirect:error";
+            return "REDIRECT_ERROR.REDIRECT_URL";
         }
 
         try{
@@ -35,7 +35,7 @@ export class PostDetailControllerV6 implements ControllerV6{
             return "post-detail"
         }
         catch(e){
-            return "redirect:error";
+            return "REDIRECT_ERROR.REDIRECT_URL";
         }
     }
 
