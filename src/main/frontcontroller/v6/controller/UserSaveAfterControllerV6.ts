@@ -4,13 +4,20 @@ import {Response} from "../../../was/response";
 import {MemberRepository} from "../../../domain/member/MemberRepository";
 
 export class UserSaveAfterControllerV6 implements ControllerV6{
-    private memberRepository: MemberRepository = MemberRepository.getInstance();
 
     async process(req: Request, res: Response, paramMap: Map<string, string>, model: Map<string, object>) {
-        const id = req.query['id'];
+        const email = req.query['email'];
+        const nickname = req.query['nickname'];
 
-        const findMember = await this.memberRepository.findById(+id);
-        model.set("member", findMember);
+        if(!email || !nickname){
+            throw new Error("Missing email address or nickname");
+        }
+
+        const member = {
+            email: email,
+            nickname: nickname,
+        };
+        model.set("member", member);
         return "login-ok";
     }
 

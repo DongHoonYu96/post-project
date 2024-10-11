@@ -19,7 +19,7 @@ export class UserSaveController implements ControllerV4{
         const member = new Member(email, nickname , password);
         try{
             const savedMember = await this.memberRepository.save(member);
-            return "redirect:/user/login-ok?id=" + savedMember.id;
+            return `redirect:/user/login-ok?email=${email}&nickname=${nickname}`;
         }
         catch(e){
             return "redirect:error";
