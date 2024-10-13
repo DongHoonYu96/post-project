@@ -17,18 +17,10 @@ export class HomeControllerV6 implements ControllerV6{
 
         // await this.redisClient.connect();
 
-        let posts;
-        const cachedPosts = await this.redisClient.get('posts');
-
-        if (cachedPosts) {
-            posts = JSON.parse(cachedPosts);
-        } else {
-            posts = await this.postRepository.find({
-                relations: ['member'],
-            });
-            await this.redisClient.set('posts', JSON.stringify(posts));
-        }
-        model.set("posts", posts);
+        const posts = await this.postRepository.find({
+            relations: ['member'],
+        });
+        model.set("posts",posts);
 
         /**
          * 로그인이 된경우, 동적 렌더링 필요

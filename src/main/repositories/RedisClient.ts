@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 dotenv.config(); // env환경변수 파일 가져오기
 
 export const RedisClient = createClient({
-    url: `redis://${process.env.DB_HOST}:${process.env.PORT_REDIS}`,
+    url: `redis://${process.env.REDIS_HOST}:${process.env.PORT_REDIS}`,
     socket: {
         reconnectStrategy: (retries) => {
             if (retries > 10) {
