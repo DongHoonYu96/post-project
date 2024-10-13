@@ -29,6 +29,7 @@ import {PostDetailControllerV6} from "../v6/controller/PostDetailControllerV6";
 import {CommentSaveControllerV6} from "../v6/controller/CommentSaveControllerV6";
 import {PostSaveRandomControllerV6} from "../v6/controller/PostSaveRandomControllerV6";
 import {GetAllPostControllerV6} from "../v6/controller/GetAllPostControllerV6";
+import {UserListControllerV6} from "../v6/controller/UserListControllerV6";
 
 
 /**
@@ -77,7 +78,7 @@ export class FrontControllerServletV5 {
         this.handlerMappingMap.set("/user/login-failed", new LoginFailControllerV4());
         this.handlerMappingMap.set("/user/login-ok", new UserSaveAfterControllerV6());
 
-        this.handlerMappingMap.set("/user/list", new UserListControllerV4());
+        this.handlerMappingMap.set("/user/list", new UserListControllerV6());
         this.handlerMappingMap.set("/user/logout", new LogOutControllerV6());
     }
 

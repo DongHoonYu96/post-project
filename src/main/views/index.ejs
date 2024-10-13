@@ -70,26 +70,20 @@
     </ul>
 
     <nav class="navbar">
-        <% if (typeof member !== 'undefined' && member !== null) { %>
-            <% for (let i = 1; i <= data.total/10 + 1; i++) { %>
-                <a href="/post?page=<%= i %>"><%= i %></a>
-            <% } %>
-        <% } else { %>
+        <% for (let i = 1; i <= data.total/10 + 1; i++) { %>
+            <a href="/post?page=<%= i %>"><%= i %></a>
         <% } %>
         <ul class="nav-item-box">
-        <% if (typeof member !== 'undefined' && member !== null) { %>
-            <li>
-                <button onclick="location.href='/user/mypage'" class="button BoldS">
-                    <p>검색어를 입력하세요</p>
-                </button>
-            </li>
-            <li>
-                <button onclick="location.href='/post/form'" class="button BoldS">
-                    <p>글쓰기</p>
-                </button>
-            </li>
-        <% } else { %>
-        <% } %>
+        <li>
+            <button onclick="location.href='/user/mypage'" class="button BoldS">
+                <p>검색어를 입력하세요</p>
+            </button>
+        </li>
+        <li>
+            <button onclick="location.href='/post/form'" class="button BoldS">
+                <p>글쓰기</p>
+            </button>
+        </li>
         </ul>
     </nav>
 </body>
