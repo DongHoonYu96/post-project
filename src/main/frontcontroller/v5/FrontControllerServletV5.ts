@@ -28,6 +28,7 @@ import {PostSaveControllerV6} from "../v6/controller/PostSaveControllerV6";
 import {PostDetailControllerV6} from "../v6/controller/PostDetailControllerV6";
 import {CommentSaveControllerV6} from "../v6/controller/CommentSaveControllerV6";
 import {PostSaveRandomControllerV6} from "../v6/controller/PostSaveRandomControllerV6";
+import {GetAllPostControllerV6} from "../v6/controller/GetAllPostControllerV6";
 
 
 /**
@@ -54,6 +55,7 @@ export class FrontControllerServletV5 {
 
         this.initUserController();
 
+        this.handlerMappingMap.set("/post", new GetAllPostControllerV6());
         this.handlerMappingMap.set("/post/form", new PostFormControllerV4());
         this.handlerMappingMap.set("/post/save", new PostSaveControllerV6());
         this.handlerMappingMap.set("/post/save/random", new PostSaveRandomControllerV6());

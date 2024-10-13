@@ -5,7 +5,6 @@
 </head>
 
 <body>
-<h1>hello, world!</h1>
 
 <nav class="navbar">
     <a href="/">HELLO. WEB!</a>
@@ -49,7 +48,7 @@
 </section>
 
 <section class="board-box">
-    <p class="board-count">전체글 <span><%=posts.length%></span>개</p>
+    <p class="board-count">전체글 <span><%=data.total%></span>개</p>
     <ul class="board-list">
         <li class="board-header">
             <div>
@@ -72,7 +71,9 @@
 
     <nav class="navbar">
         <% if (typeof member !== 'undefined' && member !== null) { %>
-            <a ><1, 2, 3, 4, 5></a>
+            <% for (let i = 1; i <= data.total/10 + 1; i++) { %>
+                <a href="/post?page=<%= i %>"><%= i %></a>
+            <% } %>
         <% } else { %>
         <% } %>
         <ul class="nav-item-box">
