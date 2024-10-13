@@ -20,8 +20,8 @@ export class HomeControllerV6 implements ControllerV6{
         // await this.redisClient.connect();
 
         const data = await this.paginationService.paginate(
-            new BasePaginatePostDto(1, 1,
-                undefined, 'ASC', 10),
+            new BasePaginatePostDto(1, undefined,
+                undefined, 'DESC', 10),
             this.postRepository,
             {
                 relations:{
