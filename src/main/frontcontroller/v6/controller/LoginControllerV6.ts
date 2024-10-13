@@ -3,6 +3,7 @@ import {Request} from "../../../was/request";
 import {Response} from "../../../was/response";
 import {SessionManager} from "../../../utils/SessionManager";
 import {MemberRepository} from "../../../domain/member/MemberRepository";
+import * as bcrypt from 'bcryptjs'
 
 export class LoginControllerV6 implements ControllerV6{
 
@@ -18,7 +19,7 @@ export class LoginControllerV6 implements ControllerV6{
             console.log('회원없음 회원가입필요');
             return "redirect:user/login_failed";
         }
-        if(findMember && password !== findMember.getPassword()){
+        if(!await bcrypt.compare(password, findMember.password)){
             console.log('비밀번호 불일치');
             return "redirect:user/login_failed";
         }

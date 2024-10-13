@@ -1,8 +1,8 @@
 import {Member} from "../../../domain/member/Member";
-import {MemoryMemberRepository} from "../../../domain/member/MemoryMemberRepository";
 import {ControllerV4} from "../ControllerV4";
 import {MemberRepository} from "../../../domain/member/MemberRepository";
 import {REDIRECT_ERROR} from "../../../was/const/httpConsts";
+import * as bcrypt from 'bcryptjs'
 
 export class UserSaveController implements ControllerV4{
 
@@ -17,9 +17,12 @@ export class UserSaveController implements ControllerV4{
         const nickname: string = paramMap.get('nickname');
         const password: string = paramMap.get('password');
 
-        const member = new Member(email, nickname , password);
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const member = new Member(email, nickname , hashedPassword);
         try{
-            const savedMember = await this.memberRepository.save(member);
+            await this.memberRepository.save(member);
             return `redirect:/user/login-ok?email=${email}&nickname=${nickname}`;
         }
         catch(e){
