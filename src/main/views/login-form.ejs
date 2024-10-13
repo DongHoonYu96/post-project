@@ -11,9 +11,9 @@
     <div class="title">로그인</div>
 </div>
 <% if (typeof redirectURL !== 'undefined' && redirectURL !== null && typeof redirectURL.redirectURL !== 'undefined' && redirectURL.redirectURL !== null) { %>
-    <form action="//localhost:3000/user/login?redirectURL=<%= redirectURL.redirectURL %>" method="POST">
+    <form action="/user/login?redirectURL=<%= redirectURL.redirectURL %>" method="POST">
 <% } else { %>
-    <form action="//localhost:3000/user/login" method="POST">
+    <form action="/user/login" method="POST">
 <% } %>
     <div class="input-form">
         <div class="input-block">
