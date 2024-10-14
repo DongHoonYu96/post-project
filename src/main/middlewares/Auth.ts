@@ -3,7 +3,8 @@ import {Response} from "../was/response";
 import {SessionManager} from "../utils/SessionManager";
 
 const whiteList: string[] = ['/index','/index2.html','/user/login','/user/form','/user/save',
-    '/user/login/form','/user/login/failed',  '/css', '/js', '/images', '/favicon.ico', '/user/views/css/main.css'];
+    '/user/login/form','/user/login/failed',  '/css',
+    '/js', '/images', '/favicon.ico', '/user/views/css/main.css','/auth/github','/auth/github/callback'];
 const sessionManager: SessionManager = SessionManager.getInstance();
 
 function isLoginCheckPath(url: string): boolean {

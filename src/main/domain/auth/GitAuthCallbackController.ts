@@ -7,6 +7,7 @@ import {SessionManager} from "../../utils/SessionManager";
 import axios from 'axios';
 import {Member} from "../member/Member";
 import { v4 as uuidv4 } from 'uuid';
+import {PROTOCOL} from "../../was/const/httpConsts";
 
 dotenv.config(); // env환경변수 파일 가져오기
 
@@ -19,7 +20,11 @@ export class GitAuthCallbackController implements ControllerV6{
     async process(req: Request, res: Response, paramMap: Map<string, string>, model: Map<string, object>) {
         const clientId: string = process.env.GITHUB_CLIENT_ID;
         const clientSecret: string = process.env.GITHUB_CLIENT_SECRET;
-        const redirectURI = 'http://localhost:3000/auth/github/callback';
+
+        const host = req.headers.get('host');
+        const path = '/auth/github/callback';
+        const fullUrl = `${PROTOCOL.HTTP}://${host}${path}`;
+        const redirectURI = fullUrl;
         const { code } = req.query;
 
         const tokenResponse = await axios.post('https://github.com/login/oauth/access_token', {
