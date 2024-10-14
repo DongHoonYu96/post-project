@@ -1,5 +1,5 @@
 import { Socket } from 'net';
-import {statusCode, HTTP_VERSIONS, COMMON_MIME_TYPES, cachePolicy} from './const/httpConsts';
+import {statusCode, HTTP_VERSIONS, COMMON_MIME_TYPES, cachePolicy, PROTOCOL} from './const/httpConsts';
 import {stat} from "fs/promises";
 import * as fs from "fs";
 import * as path from "path";
@@ -16,13 +16,15 @@ export class Response {
     private statusCode: StatusCode;
     private statusMessage: string;
     private body: string | Buffer;
+    private req : Request;
 
-    constructor(socket: Socket) {
+    constructor(socket: Socket ,req: Request) {
         this.socket = socket;
         this.headers = {};
         this.statusCode = 200;
         this.statusMessage = 'OK';
         this.body = '';
+        this.req=req;
     }
 
     public status(code: StatusCode): this {
@@ -75,7 +77,6 @@ export class Response {
             console.error('File read error:', error);
             res.status(404).send('File Not Found');
         }
-
     }
 
     changeExtensionToEjs(filePath: string): string {
@@ -136,10 +137,9 @@ export class Response {
         }
     }
 
-    async renderEjsTemplate(templatePath: string, data): Promise<string> {
+    async renderEjsTemplate(templatePath: string, data:any): Promise<string> {
         // 템플릿 파일 읽기
         const template =await fs.promises.readFile(templatePath, 'utf-8');
-        //fs.readFileSync(templatePath, 'utf-8');
 
         // EJS를 사용하여 템플릿 렌더링
         const html = ejs.render(template, data, {
@@ -167,8 +167,20 @@ export class Response {
         if(!path.startsWith('/')){
             path = '/'+path;
         }
-        this.header("Location","http://localhost:3000" + path);
+        // 절대 URL인 경우 그대로 사용
+        if (path.startsWith('http://') || path.startsWith('https://')) {
+            this.header("Location", path);
+        } else {
+            // 상대 경로인 경우, 현재 호스트를 기반으로 URL 구성
+            const host = this.req.headers.get('host');
+            const fullUrl = `${PROTOCOL.HTTP}://${host}${path}`;
+            this.header("Location", fullUrl);
+        }
         this.send();
+    }
+
+    public redirectGithub(path: string) {
+        this.status(302).header("Location", path).send();
     }
 
     public send(body?: string | Buffer): void {

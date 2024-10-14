@@ -3,11 +3,10 @@ import {Request} from "../../../was/request";
 import {Response} from "../../../was/response";
 import {SessionManager} from "../../../utils/SessionManager";
 import {PostRepository} from "../../../domain/post/PostRepository";
-import {RedisClient} from "../../../repositories/RedisClient";
 import {PaginationService} from "../../../domain/common/PaginationService";
 import {BasePaginatePostDto} from "../../../domain/common/dto/BasePaginatePostDto";
 
-export class HomeControllerV6 implements ControllerV6{
+export class GetAllPostControllerV6 implements ControllerV6{
 
     private sessionMgr : SessionManager = SessionManager.getInstance();
     private postRepository  = PostRepository.getInstance().getRepo();
@@ -17,10 +16,8 @@ export class HomeControllerV6 implements ControllerV6{
         const findCookieVal = this.sessionMgr.findCookie(req, this.sessionMgr.SESSION_COOKIE_NAME);
         const findMember = this.sessionMgr.findMemberByCookieVal(findCookieVal);
 
-        // await this.redisClient.connect();
-
         const data = await this.paginationService.paginate(
-            new BasePaginatePostDto(1, undefined,
+            new BasePaginatePostDto(+req.query['page'], undefined,
                 undefined, 'DESC', 10),
             this.postRepository,
             {
@@ -46,11 +43,6 @@ export class HomeControllerV6 implements ControllerV6{
         }
     }
 
-
     version6() {
-    }
-
-    sayHello() {
-        //say hello
     }
 }

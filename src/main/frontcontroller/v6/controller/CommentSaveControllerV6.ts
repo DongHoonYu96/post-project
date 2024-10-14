@@ -7,6 +7,7 @@ import {Comment} from "../../../domain/comment/Comment";
 import {CommentRepository} from "../../../domain/comment/CommentRepository";
 import {MemberRepository} from "../../../domain/member/MemberRepository";
 import {Repository} from "typeorm";
+import {REDIRECT_ERROR} from "../../../was/const/httpConsts";
 
 export class CommentSaveControllerV6 implements ControllerV6{
 
@@ -19,15 +20,21 @@ export class CommentSaveControllerV6 implements ControllerV6{
         const content = paramMap.get('content');
 
         if(!postId || !content ){
-            return "redirect:error";
+            return "REDIRECT_ERROR.REDIRECT_URL";
         }
         const loginUser = req.user;
 
         const findPost = await this.postRepository.findOne({
             where: { id: postId },
         });
-        if(!loginUser || !findPost){
-            return "redirect:error";
+        if(!loginUser){
+            model.set("msg",{msg : "회원없음"});
+            return REDIRECT_ERROR.REDIRECT_URL;
+        }
+
+        if(!findPost){
+            model.set("msg",{msg : "게시글없음"});
+            return REDIRECT_ERROR.REDIRECT_URL;
         }
 
         const comment = new Comment(loginUser, findPost , content);
@@ -37,7 +44,7 @@ export class CommentSaveControllerV6 implements ControllerV6{
             return "redirect:post/"+postId;
         }
         catch(e){
-            return "redirect:error";
+            return REDIRECT_ERROR.REDIRECT_URL;
         }
     }
 
