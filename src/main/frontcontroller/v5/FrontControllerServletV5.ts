@@ -164,7 +164,7 @@ export class FrontControllerServletV5 {
      * @private
      */
     private viewResolver(viewName: string):MyView {
-        const viewPath: string = path.join(process.cwd(), 'dist', 'views',viewName+'.html');
+        const viewPath: string = path.join(process.cwd(), 'src','main', 'views',viewName+'.html');
         const view = new MyView(viewPath);
         return view;
     }

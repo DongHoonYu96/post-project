@@ -36,7 +36,7 @@ export const StaticServe = async (req : Request, res : Response) => {
 
     const pathLastTwo = go(req.path);
 
-    const publicPath = path.join(process.cwd(), 'dist','views', pathLastTwo);
+    const publicPath = path.join(process.cwd(), 'src','main','views', pathLastTwo);
 
     if (Object.keys(mimeType).includes(ext)) {
         try{
