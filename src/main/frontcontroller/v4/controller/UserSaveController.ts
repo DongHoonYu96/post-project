@@ -28,7 +28,5 @@ export class UserSaveController implements ControllerV4{
         catch(e){
             return REDIRECT_ERROR.REDIRECT_URL;
         }
-
-
     }
 }

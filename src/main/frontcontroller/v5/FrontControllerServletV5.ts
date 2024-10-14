@@ -30,6 +30,8 @@ import {CommentSaveControllerV6} from "../v6/controller/CommentSaveControllerV6"
 import {PostSaveRandomControllerV6} from "../v6/controller/PostSaveRandomControllerV6";
 import {GetAllPostControllerV6} from "../v6/controller/GetAllPostControllerV6";
 import {UserListControllerV6} from "../v6/controller/UserListControllerV6";
+import {GitAuthController} from "../../domain/auth/GitAuthController";
+import {GitAuthCallbackController} from "../../domain/auth/GitAuthCallbackController";
 
 
 /**
@@ -59,11 +61,18 @@ export class FrontControllerServletV5 {
         this.handlerMappingMap.set("/post", new GetAllPostControllerV6());
         this.handlerMappingMap.set("/post/form", new PostFormControllerV4());
         this.handlerMappingMap.set("/post/save", new PostSaveControllerV6());
-        this.handlerMappingMap.set("/post/save/random", new PostSaveRandomControllerV6());
+        // this.handlerMappingMap.set("/post/save/random", new PostSaveRandomControllerV6()); //test용 라우터
         this.handlerMappingMap.set("/post/:id", new PostDetailControllerV6());
 
         this.handlerMappingMap.set("/comment/save", new CommentSaveControllerV6());
 
+        this.handlerMappingMap.set("/auth/github", new GitAuthController());
+        this.handlerMappingMap.set("/auth/github/callback", new GitAuthCallbackController());
+
+        this.initAdapters();
+    }
+
+    private initAdapters() {
         this.handlerAdapters.push(new ControllerV3HandleAdapter());
         this.handlerAdapters.push(new ControllerV4HandleAdapter());
         this.handlerAdapters.push(new ControllerV6HandleAdapter());
@@ -99,12 +108,14 @@ export class FrontControllerServletV5 {
         const reqURI = req.path;
         const handler : any = this.findHandler(reqURI);
         if(!handler){
-            res.status(404).send();
+            const view = this.viewResolver("error404");
+            view.renderEjs(new Map(),req,res);
             return;
         }
 
         const adapter = this.getHandlerAdapter(handler);
         const mv = await adapter.handle(req,res,handler);
+        if(req.isEnd) return; //github redirect인경우, 진행안함.
 
         /**
          * Controller에서 redirect:index 요청시
@@ -112,7 +123,7 @@ export class FrontControllerServletV5 {
          * res. Location = index.html
          */
         let viewName = mv.getViewName();
-        let view: MyView = this.viewResolver(viewName); //물리이름이 들어간 MyView 객체 만들기
+        let view = this.viewResolver(viewName); //물리이름이 들어간 MyView 객체 만들기
 
         /**
          * redirect 처리위한 로직

@@ -77,7 +77,6 @@ export class Response {
             console.error('File read error:', error);
             res.status(404).send('File Not Found');
         }
-
     }
 
     changeExtensionToEjs(filePath: string): string {
@@ -138,10 +137,9 @@ export class Response {
         }
     }
 
-    async renderEjsTemplate(templatePath: string, data): Promise<string> {
+    async renderEjsTemplate(templatePath: string, data:any): Promise<string> {
         // 템플릿 파일 읽기
         const template =await fs.promises.readFile(templatePath, 'utf-8');
-        //fs.readFileSync(templatePath, 'utf-8');
 
         // EJS를 사용하여 템플릿 렌더링
         const html = ejs.render(template, data, {
@@ -179,6 +177,10 @@ export class Response {
             this.header("Location", fullUrl);
         }
         this.send();
+    }
+
+    public redirectGithub(path: string) {
+        this.status(302).header("Location", path).send();
     }
 
     public send(body?: string | Buffer): void {

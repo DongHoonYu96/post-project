@@ -3,6 +3,7 @@ import {Response} from "../../../was/response";
 import {PostRepository} from "../../../domain/post/PostRepository";
 import {Post} from "../../../domain/post/Post";
 import {ControllerV6} from "../ControllerV6";
+import {REDIRECT_ERROR} from "../../../was/const/httpConsts";
 
 export class PostSaveControllerV6 implements ControllerV6{
 
@@ -17,7 +18,7 @@ export class PostSaveControllerV6 implements ControllerV6{
         const content= paramMap.get('content');
 
         if(!title || !content || !req.user){
-            return "REDIRECT_ERROR.REDIRECT_URL";
+            return REDIRECT_ERROR.REDIRECT_URL;
         }
 
         const post = new Post(title, content , req.user);
@@ -27,7 +28,7 @@ export class PostSaveControllerV6 implements ControllerV6{
             return "redirect:index"
         }
         catch(e){
-            return "REDIRECT_ERROR.REDIRECT_URL";
+            return REDIRECT_ERROR.REDIRECT_URL;
         }
     }
 
