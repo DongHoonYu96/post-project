@@ -35,6 +35,21 @@ export class PostDetailControllerV6 implements ControllerV6{
                 relations: ['member', 'comments', 'comments.member'],
             });
 
+            const [prevPost, nextPost] = await Promise.all([
+                this.postRepository.createQueryBuilder('post')
+                    .where('post.id < :id', { id: postId })
+                    .orderBy('post.id', 'DESC')
+                    .select(['post.id', 'post.title'])
+                    .getOne(),
+                this.postRepository.createQueryBuilder('post')
+                    .where('post.id > :id', { id: postId })
+                    .orderBy('post.id', 'ASC')
+                    .select(['post.id', 'post.title'])
+                    .getOne()
+            ]);
+            model.set("prevPost", prevPost);
+            model.set("nextPost", nextPost);
+
             //코드위치 : 에러가없이 post 찾아온 이후,
             //redis에 조회수 증가시킴
             await this.viewCountManager.incrementViewCount(postId);

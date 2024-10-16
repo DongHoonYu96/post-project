@@ -68,8 +68,16 @@
 
     <div class="post-navigation">
         <div class="nav-buttons">
-            <a href="/post/3" class="nav-button">이전글 : 미완성</a>
-            <a href="/post/4" class="nav-button">다음글 : 미완성</a>
+            <% if (prevPost) { %>
+                <a href="/post/<%= prevPost.id %>" class="nav-button">이전글: <%= prevPost.title %></a>
+            <% } else { %>
+                <span class="nav-button disabled">이전글 없음</span>
+            <% } %>
+            <% if (nextPost) { %>
+                <a href="/post/<%= nextPost.id %>" class="nav-button">다음글: <%= nextPost.title %></a>
+            <% } else { %>
+                <span class="nav-button disabled">다음글 없음</span>
+            <% } %>
         </div>
         <div class="list-button">
             <a href="/index" class="nav-button">목록으로</a>
