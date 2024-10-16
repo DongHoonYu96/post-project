@@ -104,8 +104,35 @@ class Server {
         this.middlewares.push(middleware);
     }
 
+    private async handleSocket(socket: net.Socket) {
+        let buffer = Buffer.alloc(0);
+        let headersParsed = false;
+        let contentLength = 0;
+        let headers = '';
 
-    private handleSocket(socket: net.Socket){
+        for await (const chunk of socket) {
+            buffer = Buffer.concat([buffer, chunk]);
+
+            if (!headersParsed) {
+                const headerEndIndex = buffer.indexOf(CRLF + CRLF);
+                if (headerEndIndex !== -1) {
+                    headers = buffer.slice(0, headerEndIndex).toString();
+                    contentLength = this.getContentLength(headers);
+                    buffer = buffer.slice(headerEndIndex + 4);
+                    headersParsed = true;
+                }
+            }
+
+            if (headersParsed && (buffer.length >= contentLength || contentLength === 0)) {
+                await this.handleRequest(headers, buffer.slice(0, contentLength), socket);
+                buffer = buffer.slice(contentLength);
+                headersParsed = false;
+                contentLength = 0;
+            }
+        }
+    }
+
+    private handleSocketOld(socket: net.Socket){
         let bufferedData = Buffer.alloc(0);
         let contentLength = 0;
         let headers = '';
