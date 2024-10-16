@@ -29,6 +29,10 @@
         <%=post.content%>
     </div>
 
+    <% if (post.image) { %>
+        <img src="<%= imagePath.imagePath %>" alt="Post Image" class="post-image">
+    <% } %>
+
     <div class="comment-count">
         댓글 수: <%=post.comments.length%>
     </div>

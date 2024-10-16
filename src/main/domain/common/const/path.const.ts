@@ -11,6 +11,12 @@ export const POSTS_FOLDER_NAME = 'posts';
 //임시 폴더이름
 export const TEMP_FOLDER_NAME = 'temp';
 
+// /public/posts
+export const POSTS_FOLDER_NAME_ABS = join(
+    PUBLIC_FOLDER_NAME,
+    POSTS_FOLDER_NAME
+)
+
 //공개폴더의 절대경로
 // /{}/public
 export const PUBLIC_FOLDER_PATH = join(

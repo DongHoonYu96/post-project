@@ -6,6 +6,8 @@ import {Repository} from "typeorm";
 import {Post} from "../../../domain/post/Post";
 import {ViewCountManager} from "../../../domain/post/ViewCountManager";
 import {REDIRECT_ERROR} from "../../../was/const/httpConsts";
+import * as path from "node:path";
+import {POST_IMAGE_PATH, POSTS_FOLDER_NAME_ABS} from "../../../domain/common/const/path.const";
 
 export class PostDetailControllerV6 implements ControllerV6{
 
@@ -39,10 +41,25 @@ export class PostDetailControllerV6 implements ControllerV6{
 
             model.set("post",findPost);
             model.set("member",req.user);
+            this.makeImageUrlAndSetModel(findPost, model);
+
             return "post-detail"
         }
         catch(e){
             return REDIRECT_ERROR.REDIRECT_URL;
+        }
+    }
+
+    private makeImageUrlAndSetModel(findPost: Post, model: Map<string, object>) {
+        /**
+         * image : 이미지의 이름 (uuid)
+         * imageUrl : 이미지의 경로
+         */
+        if (findPost.image) {
+            const image = findPost.image;
+            const imagePath = '/' + path.join(POSTS_FOLDER_NAME_ABS, image);
+
+            model.set("imagePath", {imagePath: imagePath});
         }
     }
 
