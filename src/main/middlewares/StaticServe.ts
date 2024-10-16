@@ -38,10 +38,22 @@ export const StaticServe = async (req : Request, res : Response) => {
 
     const publicPath = path.join(process.cwd(), 'src','main','views', pathLastTwo);
 
+    const publicPath2 = path.join(process.cwd(), req.path);
+
+    /**
+     * 정적 파일 제공
+     * .png, .css 같은 확장자는 여기를 통합니다.
+     */
     if (Object.keys(mimeType).includes(ext)) {
         try{
-            const file = await fs.promises.readFile(publicPath);
-            res.render(file,mimeType[ext]);
+            if(!fs.existsSync(publicPath)){ // src/main/views 내에 파일이 없을 경우, publicPath2에서 찾음
+                let file = await fs.promises.readFile(publicPath2);
+                res.render(file,mimeType[ext]);
+            }
+            else{
+                let file = await fs.promises.readFile(publicPath);
+                res.render(file,mimeType[ext]);
+            }
         }catch (error) {
             console.error('File read error:', error);
             res.status(404).send('File Not Found');
@@ -50,7 +62,6 @@ export const StaticServe = async (req : Request, res : Response) => {
             req.isEnd=true;
         }
     }
-
 
 }
 
