@@ -20,7 +20,7 @@ export class CommentSaveControllerV6 implements ControllerV6{
         const content = paramMap.get('content');
 
         if(!postId || !content ){
-            return "REDIRECT_ERROR.REDIRECT_URL";
+            return REDIRECT_ERROR.REDIRECT_URL;
         }
         const loginUser = req.user;
 

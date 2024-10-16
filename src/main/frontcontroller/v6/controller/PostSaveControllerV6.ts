@@ -4,6 +4,7 @@ import {PostRepository} from "../../../domain/post/PostRepository";
 import {Post} from "../../../domain/post/Post";
 import {ControllerV6} from "../ControllerV6";
 import {REDIRECT_ERROR} from "../../../was/const/httpConsts";
+import {saveUploadedImage} from "../../../was/parseMultipartFormData";
 
 export class PostSaveControllerV6 implements ControllerV6{
 
@@ -17,11 +18,13 @@ export class PostSaveControllerV6 implements ControllerV6{
         const title = paramMap.get('title');
         const content= paramMap.get('content');
 
+        const fileName = await saveUploadedImage(req);
+
         if(!title || !content || !req.user){
             return REDIRECT_ERROR.REDIRECT_URL;
         }
 
-        const post = new Post(title, content , req.user);
+        const post = new Post(title, content , req.user, fileName);
         try{
             const savedPost = await this.postRepository.save(post);
             //todo : 해당 post의 상세 페이지로 이동

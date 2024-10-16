@@ -9,6 +9,7 @@ interface ParsedRequest {
     query: { [key: string]: string | string[] };
     headers: Map<string, string>;
     body: any;
+    file: any;
     user : Member;
 }
 
@@ -19,10 +20,11 @@ class Request implements ParsedRequest {
     public query: { [key: string]: string | string[] };
     public headers: Map<string, string>;
     public body: any;
+    public file: any;
     public Cookie : any;
     public cookies : any;
     public isEnd : boolean;
-    private rawBody: Buffer;
+    public rawBody: Buffer;
     public user : Member;
 
     constructor(rawHeaders: string, rawBody: Buffer) {
@@ -32,9 +34,20 @@ class Request implements ParsedRequest {
     }
 
     private parseRequest(rawHeaders: string): void {
+        /**
+         * const rawHeaders = `POST /upload-image HTTP/1.1\r\nHost: localhost:3000\r\nConnection: keep-alive\r\nContent-Length: 12548`;
+         */
         const [mainLine, ...headerLines] = rawHeaders.split(CRLF);
-        const [method, path, httpVersion] = mainLine.split(' ');
+        let [method, path, httpVersion] = mainLine.split(' ');
+
+        // console.log("rawHeaders: " + rawHeaders);
+
+        // method, path, httpVersion이 존재하는지 확인
+        // if (!path) {
+        //     path = '/image-upload';
+        // }
         const parsedUrl = parseUrl(path as string, true) as UrlWithParsedQuery;
+
 
         this.httpVersion = httpVersion;
         this.method = method;
@@ -50,6 +63,7 @@ class Request implements ParsedRequest {
 
     private parseBody(): void {
         const contentType = this.headers.get('content-type');
+        
         if (contentType?.includes('application/json')) {
             try {
                 this.body = JSON.parse(this.rawBody.toString());

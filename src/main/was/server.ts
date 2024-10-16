@@ -10,6 +10,7 @@ import {createHash} from "node:crypto"; // 라우터 타입을 위해 추가
 import { stat } from 'fs/promises';
 import {FrontControllerServletV5} from "../frontcontroller/v5/FrontControllerServletV5";
 import {StaticServe} from "../middlewares/StaticServe";
+import {parseMultipartFormData, processMultipartData} from "./parseMultipartFormData";
 
 /**
  * Represents an HTTP request handler function.
@@ -103,7 +104,8 @@ class Server {
         this.middlewares.push(middleware);
     }
 
-    private handleSocket(socket: net.Socket): void {
+
+    private handleSocket(socket: net.Socket){
         let bufferedData = Buffer.alloc(0);
         let contentLength = 0;
         let headers = '';
@@ -117,28 +119,34 @@ class Server {
         });
     }
 
-    private processData(
+     private processData(
         data: Buffer,
         socket: net.Socket,
         bufferedData: Buffer,
         headers: string,
         contentLength: number
-    ): [Buffer, string, number] {
+    ) : [Buffer, string, number] {
         const dataStr = data.toString();
         const headerEndIndex = dataStr.indexOf(CRLF + CRLF);
 
         if (headerEndIndex !== -1) {
+            // 헤더의 끝을 찾은 경우, 헤더와 본문을 분리합니다.
             headers = dataStr.slice(0, headerEndIndex);
             contentLength = this.getContentLength(headers);
             bufferedData = Buffer.concat([bufferedData, data.slice(headerEndIndex + CRLF.length * 2)]);
         } else {
+            // 헤더의 끝을 찾지 못한 경우, 데이터를 버퍼에 추가합니다.
             bufferedData = Buffer.concat([bufferedData, data]);
         }
 
+       // 버퍼된 데이터의 길이가 콘텐츠 길이보다 크거나 같은 경우, 요청을 처리합니다.
         if (bufferedData.length >= contentLength) {
             this.handleRequest(headers, bufferedData.slice(0, contentLength), socket);
             bufferedData = bufferedData.slice(contentLength);
         }
+
+        // console.log("=====================================");
+        // console.log('bufferedData:', bufferedData, 'headers:', headers, 'contentLength:', contentLength);
 
         return [bufferedData, headers, contentLength];
     }
@@ -148,9 +156,29 @@ class Server {
         return contentLengthLine ? Number(contentLengthLine.split(':')[1].trim()) : 0;
     }
 
-    private async handleRequest(headers: string, body: Buffer, socket: net.Socket): Promise<void> {
-        const req = new Request(headers, body);
-        const res = new Response(socket, req);
+
+    private async handleRequest(headers: string, body: Buffer, socket: net.Socket) {
+
+        // const bodyStr = body.toString();
+        // console.log(headers);
+        // console.log('body: ' + body);
+
+        let req : Request, res:Response;
+        try{
+            req = new Request(headers, body);
+            res = new Response(socket, req);
+        }
+        catch (e){
+            console.log(e);
+            console.log(headers,body);
+            return;
+        }
+
+        if(req.headers.get('content-type')?.includes('multipart/form-data')){
+            const parsedFields = parseMultipartFormData(body);
+            processMultipartData(parsedFields, req);
+            console.log(parsedFields);
+        }
 
         try {
             this.runMiddleware(this.middlewares, 0, null, req, res);

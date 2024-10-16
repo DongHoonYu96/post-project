@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>글쓰기</title>
     <link rel="stylesheet" href="../css/post-form.css">
+    <style>
+        #editor {
+            min-height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        #editor img {
+            max-width: 100%;
+            height: auto;
+        }
+        .image-upload-btn {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar">
@@ -15,12 +29,10 @@
         <li><button onclick="location.href='/user/logout'" class="button">로그아웃</button></li>
     </ul>
 </nav>
-
 <div class="title-block">
     <h1 class="title">글쓰기</h1>
 </div>
-
-<form action="/post/save" method="POST" class="writing-form" id="writing-form">
+<form id="writing-form" class="writing-form" action="/post/save" method="POST" enctype="multipart/form-data">
     <div class="input-form">
         <div class="input-block">
             <label for="title" class="input-label">제목</label>
@@ -34,20 +46,24 @@
             />
         </div>
         <div class="input-block">
-            <label for="content" class="input-label">내용</label>
-            <textarea
+            <label for="content" class="input-label">제목</label>
+            <input
                     class="input-data content-input"
+                    type="text"
                     id="content"
                     name="content"
                     required
                     placeholder="글의 내용을 입력하세요"
-            ></textarea>
+            />
+        </div>
+        <div class="input-block">
+            <label for="image" class="input-label">이미지 첨부</label>
+            <input type="file" id="image" name="image" accept="image/*" class="image-upload">
         </div>
         <div class="submit-button-block">
             <button type="submit" class="button-long submit">작성완료</button>
         </div>
     </div>
 </form>
-
 </body>
 </html>

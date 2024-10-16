@@ -5,6 +5,7 @@ import {ControllerV6} from "../ControllerV6";
 import {Repository} from "typeorm";
 import {Post} from "../../../domain/post/Post";
 import {ViewCountManager} from "../../../domain/post/ViewCountManager";
+import {REDIRECT_ERROR} from "../../../was/const/httpConsts";
 
 export class PostDetailControllerV6 implements ControllerV6{
 
@@ -23,7 +24,7 @@ export class PostDetailControllerV6 implements ControllerV6{
         const postId = +req.path.split('/').pop();
 
         if(!postId){
-            return "REDIRECT_ERROR.REDIRECT_URL";
+            return REDIRECT_ERROR.REDIRECT_URL;
         }
 
         try{
@@ -41,7 +42,7 @@ export class PostDetailControllerV6 implements ControllerV6{
             return "post-detail"
         }
         catch(e){
-            return "REDIRECT_ERROR.REDIRECT_URL";
+            return REDIRECT_ERROR.REDIRECT_URL;
         }
     }
 

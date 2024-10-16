@@ -183,6 +183,50 @@ export class Response {
         this.status(302).header("Location", path).send();
     }
 
+    // public json(data: any): void {
+    //     try {
+    //         const jsonString = JSON.stringify(data);
+    //
+    //         this.header('Content-Type', 'application/json');
+    //         this.header('Content-Length', Buffer.byteLength(jsonString).toString());
+    //         this.writeHead();
+    //
+    //         const response = `\r\n${jsonString}`;
+    //
+    //         this.socket.write(response, 'utf8', (err) => {
+    //             if (err) {
+    //                 console.error('Error sending response:', err);
+    //             }
+    //             this.socket.end();
+    //         });
+    //     } catch (error) {
+    //         console.error('Error in json method:', error);
+    //         this.status(500).send('Internal Server Error');
+    //     }
+    // }
+
+    public json(data: any): void {
+        try {
+            const jsonString = JSON.stringify(data); //일반객체 -> json
+
+            this.header('Content-Type', 'application/json');
+            this.header('Content-Length', Buffer.byteLength(jsonString).toString());
+            this.writeHead();
+
+            const response = `\r\n${jsonString}`;
+
+            this.socket.write(response, 'utf8', (err) => {
+                if (err) {
+                    console.error('Error sending response:', err);
+                }
+                this.socket.end();
+            });
+        } catch (error) {
+            console.error('Error in json method:', error);
+            this.status(500).send('Internal Server Error');
+        }
+    }
+
     public send(body?: string | Buffer): void {
         if (body !== undefined) {
             this.body = body;

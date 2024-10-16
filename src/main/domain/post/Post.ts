@@ -24,6 +24,11 @@ export class Post {
     @Column({ default: 0 })
     views: number;
 
+    @Column({
+        nullable:true,
+    })
+    image?: string;
+
     @CreateDateColumn()
     createdAt: Date;
 
@@ -36,9 +41,10 @@ export class Post {
     @OneToMany(() => Comment, comment => comment.post)
     comments: Comment[];
 
-    constructor(title : string, content : string, member : Member) {
+    constructor(title : string, content : string, member : Member, image?: string) {
         this.title = title;
         this.content = content;
         this.member = member;
+        this.image = image;
     }
 }

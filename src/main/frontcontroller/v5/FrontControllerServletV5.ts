@@ -32,6 +32,7 @@ import {GetAllPostControllerV6} from "../v6/controller/GetAllPostControllerV6";
 import {UserListControllerV6} from "../v6/controller/UserListControllerV6";
 import {GitAuthController} from "../../domain/auth/GitAuthController";
 import {GitAuthCallbackController} from "../../domain/auth/GitAuthCallbackController";
+import {UploadImageController} from "../../domain/post/UploadImageController";
 
 
 /**
@@ -68,6 +69,8 @@ export class FrontControllerServletV5 {
 
         this.handlerMappingMap.set("/auth/github", new GitAuthController());
         this.handlerMappingMap.set("/auth/github/callback", new GitAuthCallbackController());
+
+        this.handlerMappingMap.set("/upload-image", new UploadImageController());
 
         this.initAdapters();
     }
