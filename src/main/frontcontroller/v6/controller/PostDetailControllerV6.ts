@@ -8,6 +8,7 @@ import {ViewCountManager} from "../../../domain/post/ViewCountManager";
 import {REDIRECT_ERROR} from "../../../was/const/httpConsts";
 import * as path from "node:path";
 import {POST_IMAGE_PATH, POSTS_FOLDER_NAME_ABS} from "../../../domain/common/const/path.const";
+import {performance} from "perf_hooks";
 
 export class PostDetailControllerV6 implements ControllerV6{
 
@@ -30,23 +31,33 @@ export class PostDetailControllerV6 implements ControllerV6{
         }
 
         try{
+
+            const start = performance.now();
+            
             const findPost = await this.postRepository.findOne({
                 where: { id: postId },
                 relations: ['member', 'comments', 'comments.member'],
             });
 
-            const [prevPost, nextPost] = await Promise.all([
-                this.postRepository.createQueryBuilder('post')
-                    .where('post.id < :id', { id: postId })
-                    .orderBy('post.id', 'DESC')
-                    .select(['post.id', 'post.title'])
-                    .getOne(),
-                this.postRepository.createQueryBuilder('post')
-                    .where('post.id > :id', { id: postId })
-                    .orderBy('post.id', 'ASC')
-                    .select(['post.id', 'post.title'])
-                    .getOne()
-            ]);
+            const prevPostPromise = this.postRepository.createQueryBuilder('post')
+                .where('post.id < :id', { id: postId })
+                .orderBy('post.id', 'DESC')
+                .select(['post.id', 'post.title'])
+                .limit(1)
+                .getOne();
+
+            const nextPostPromise = this.postRepository.createQueryBuilder('post')
+                .where('post.id > :id', { id: postId })
+                .orderBy('post.id', 'ASC')
+                .select(['post.id', 'post.title'])
+                .limit(1)
+                .getOne();
+
+            const [prevPost, nextPost] = await Promise.all([prevPostPromise, nextPostPromise]);
+
+            const end = performance.now();
+            console.log(`쿼리 실행 시간 post 상세페이지: ${end - start} 밀리초`);
+
             model.set("prevPost", prevPost);
             model.set("nextPost", nextPost);
 
