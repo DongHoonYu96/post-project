@@ -24,9 +24,14 @@ export class UserListControllerV6 implements ControllerV6{
             'user',
         );
 
+        const curPage  =  {
+            curPage: req.query['page'],
+        }
+
         const members = data.data;
         model.set("members",members);
         model.set("data", data);
+        model.set("curPage", curPage);
 
        return "user/list";
     }
