@@ -5,6 +5,7 @@ import {SessionManager} from "../../../utils/SessionManager";
 import {PostRepository} from "../../../domain/post/PostRepository";
 import {PaginationService} from "../../../domain/common/PaginationService";
 import {BasePaginatePostDto} from "../../../domain/common/dto/BasePaginatePostDto";
+import {performance} from "perf_hooks";
 
 export class GetAllPostControllerV6 implements ControllerV6{
 
@@ -15,6 +16,8 @@ export class GetAllPostControllerV6 implements ControllerV6{
     async process(req: Request, res: Response, paramMap: Map<string, string>, model: Map<string, object>) {
         const findCookieVal = this.sessionMgr.findCookie(req, this.sessionMgr.SESSION_COOKIE_NAME);
         const findMember = this.sessionMgr.findMemberByCookieVal(findCookieVal);
+
+        const start = performance.now();
 
         const data = await this.paginationService.paginate(
             new BasePaginatePostDto(+req.query['page'], undefined,
@@ -27,6 +30,9 @@ export class GetAllPostControllerV6 implements ControllerV6{
             },
             'post',
         );
+
+        const end = performance.now();
+        console.log(`쿼리 실행 시간 get posts 단독: ${end - start} 밀리초`);
 
         const curPage  =  {
             curPage: +req.query['page'],
