@@ -19,17 +19,29 @@ export class GetAllPostControllerV6 implements ControllerV6{
 
         const start = performance.now();
 
-        const data = await this.paginationService.paginate(
-            new BasePaginatePostDto(+req.query['page'], undefined,
-                undefined, 'DESC', 10),
-            this.postRepository,
-            {
-                relations:{
-                    member: true,
-                }
-            },
-            'post',
-        );
+        // const data = await this.paginationService.paginate(
+        //     new BasePaginatePostDto(+req.query['page'], undefined,
+        //         undefined, 'DESC', 10),
+        //     this.postRepository,
+        //     {
+        //         relations:{
+        //             member: true,
+        //         }
+        //     },
+        //     'post',
+        // );
+
+        const posts = await this.postRepository
+            .createQueryBuilder("post")
+            .leftJoinAndSelect("post.member", "member")
+            // .where("post.createdAt <= :date", { date: new Date() })
+            .orderBy("post.createdAt", "DESC")
+            .addOrderBy("post.id", "DESC")
+            .skip((+req.query['page'] - 1) * 10)
+            .take(10)
+            .getMany();
+
+        const cnt = await this.postRepository.count();
 
         const end = performance.now();
         console.log(`쿼리 실행 시간 get posts 단독: ${end - start} 밀리초`);
@@ -38,7 +50,10 @@ export class GetAllPostControllerV6 implements ControllerV6{
             curPage: +req.query['page'],
         }
 
-        const posts = data.data;
+        const data = {
+            total: cnt,
+        }
+
         model.set("posts",posts);
         model.set("data", data);
         model.set("curPage", curPage);
