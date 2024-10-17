@@ -6,6 +6,7 @@ import {PostRepository} from "../../../domain/post/PostRepository";
 import {RedisClient} from "../../../repositories/RedisClient";
 import {PaginationService} from "../../../domain/common/PaginationService";
 import {BasePaginatePostDto} from "../../../domain/common/dto/BasePaginatePostDto";
+import { performance } from 'perf_hooks';
 
 export class HomeControllerV6 implements ControllerV6{
 
@@ -19,21 +20,51 @@ export class HomeControllerV6 implements ControllerV6{
 
         // await this.redisClient.connect();
 
-        const data = await this.paginationService.paginate(
-            new BasePaginatePostDto(1, undefined,
-                undefined, 'DESC', 10),
-            this.postRepository,
-            {
-                relations:{
-                    member: true,
-                }
-            },
-            'post',
-        );
+        const start = performance.now();
 
-        const posts = data.data;
+        // const data = await this.paginationService.paginate(
+        //     new BasePaginatePostDto(1, undefined,
+        //         undefined, 'DESC', 10),
+        //     this.postRepository,
+        //     {
+        //         relations:{
+        //             member: true,
+        //         }
+        //     },
+        //     'post',
+        // );
+
+        const posts = await this.postRepository
+            .createQueryBuilder("post")
+            .leftJoinAndSelect("post.member", "member")
+            // .where("post.createdAt <= :date", { date: new Date() })
+            .orderBy("post.createdAt", "DESC")
+            .addOrderBy("post.id", "DESC")
+            .take(10)
+            .getMany();
+
+        const end = performance.now();
+        console.log(`쿼리 실행 시간 get posts 단독: ${end - start} 밀리초`);
+
+        const cnt = await this.postRepository.count();
+
+        const end2 = performance.now();
+        console.log(`쿼리 실행 시간 count 포함: ${end2 - start} 밀리초`);
+
+        
+
+        const data = {
+            total: cnt,
+        }
+
+        const curPage  =  {
+            curPage: 1
+        }
+
+
         model.set("posts",posts);
         model.set("data", data);
+        model.set("curPage", curPage);
 
         /**
          * 로그인이 된경우, 동적 렌더링 필요

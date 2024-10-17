@@ -69,22 +69,66 @@
         </li>
     </ul>
 
+    <%
+    function generatePagination(currentPage, totalPages, displayRange = 5) {
+        let start = Math.max(1, currentPage - Math.floor(displayRange / 2));
+        let end = Math.min(totalPages, start + displayRange - 1);
+        start = Math.max(1, end - displayRange + 1);
+
+        let pages = [];
+        if (start > 1) {
+            pages.push(1);
+            if (start > 2) pages.push('...');
+        }
+        for (let i = start; i <= end; i++) {
+            pages.push(i);
+        }
+        if (end < totalPages) {
+            if (end < totalPages - 1) pages.push('...');
+            pages.push(totalPages);
+        }
+        return pages;
+    }
+
+    const currentPage = parseInt(curPage.curPage) || 1;
+    const totalPages = Math.ceil(data.total / 10);
+    const pages = generatePagination(currentPage, totalPages);
+    %>
+
+
+
     <nav class="navbar">
-        <% for (let i = 1; i <= data.total/10 + 1; i++) { %>
-            <a href="/post?page=<%= i %>"><%= i %></a>
-        <% } %>
-        <ul class="nav-item-box">
-        <li>
-            <button onclick="location.href='/user/mypage'" class="button BoldS">
-                <p>검색어를 입력하세요</p>
+        <div class="pagination">
+            <% if (currentPage > 1) { %>
+                <a href="/post?page=<%= currentPage - 1 %>" class="page-link">&laquo; Previous</a>
+            <% } %>
+
+            <% pages.forEach(page => { %>
+                <% if (page === '...') { %>
+                    <span class="page-link">...</span>
+                <% } else if (page === currentPage) { %>
+                    <span class="page-link current"><%= page %></span>
+                <% } else { %>
+                    <a href="/post?page=<%= page %>" class="page-link"><%= page %></a>
+                <% } %>
+            <% }); %>
+
+            <% if (currentPage < totalPages) { %>
+                <a href="/post?page=<%= currentPage + 1 %>" class="page-link">Next &raquo;</a>
+            <% } %>
+        </div>
+
+        <div class="nav-actions">
+            <div class="search-box">
+                <input type="text" placeholder="검색어를 입력하세요" class="search-input">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.5 15.5L20 20M10 17a7 7 0 100-14 7 7 0 000 14z"/>
+                </svg>
+            </div>
+            <button onclick="location.href='/post/form'" class="action-button">
+                글쓰기
             </button>
-        </li>
-        <li>
-            <button onclick="location.href='/post/form'" class="button BoldS">
-                <p>글쓰기</p>
-            </button>
-        </li>
-        </ul>
+        </div>
     </nav>
 </body>
 

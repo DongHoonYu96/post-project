@@ -5,12 +5,14 @@ import {
     UpdateDateColumn,
     CreateDateColumn,
     ManyToOne,
-    OneToMany
+    OneToMany, Index
 } from "typeorm";
 import {Member} from "../member/Member";
 import {Comment} from "../comment/Comment";
 
 @Entity("posts")
+@Index("idx_post_created_at", ["createdAt"])
+@Index("idx_created_at_with_id", ["createdAt", "id"])
 export class Post {
     @PrimaryGeneratedColumn()
     id: number;

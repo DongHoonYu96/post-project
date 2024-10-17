@@ -185,11 +185,6 @@ class Server {
 
 
     private async handleRequest(headers: string, body: Buffer, socket: net.Socket) {
-
-        // const bodyStr = body.toString();
-        // console.log(headers);
-        // console.log('body: ' + body);
-
         let req : Request, res:Response;
         try{
             req = new Request(headers, body);
@@ -233,7 +228,7 @@ class Server {
         }
     }
 
-    private async sendFile(filePath: string, req : Request,  res: Response): Promise<void> {
+    private async sendFile(filePath: string, req : Request,  res: Response) {
         try {
             const stats = await stat(filePath); //날짜읽어오기
             const file = await fs.promises.readFile(filePath);

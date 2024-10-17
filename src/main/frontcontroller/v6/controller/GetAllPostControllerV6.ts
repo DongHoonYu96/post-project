@@ -28,9 +28,14 @@ export class GetAllPostControllerV6 implements ControllerV6{
             'post',
         );
 
+        const curPage  =  {
+            curPage: +req.query['page'],
+        }
+
         const posts = data.data;
         model.set("posts",posts);
         model.set("data", data);
+        model.set("curPage", curPage);
 
         /**
          * 로그인이 된경우, 동적 렌더링 필요
