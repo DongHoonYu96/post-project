@@ -12,8 +12,7 @@ $ npm start
 <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white"/>
 <img src="https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white"/>
 <img src="https://img.shields.io/badge/Nginx-009639?style=flat-square&logo=nginx&logoColor=white"/>
-<br>
-- FE<br>
+-  FE<br>
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white"/>
 <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white"/>
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black"/>
@@ -52,3 +51,6 @@ graph LR
 ## 자동배포
 - main 브랜치에 push하면 자동으로 배포됩니다.
   - https://mini-96.tistory.com/667
+
+## ERD
+![image](https://github.com/user-attachments/assets/d19a66e9-61db-418d-9c52-77fe6cc747b6)
