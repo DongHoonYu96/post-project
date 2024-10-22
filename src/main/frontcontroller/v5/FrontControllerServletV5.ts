@@ -33,6 +33,7 @@ import {UserListControllerV6} from "../v6/controller/UserListControllerV6";
 import {GitAuthController} from "../../domain/auth/GitAuthController";
 import {GitAuthCallbackController} from "../../domain/auth/GitAuthCallbackController";
 import {UploadImageController} from "../../domain/post/UploadImageController";
+import {PostSearchController} from "../../domain/post/PostSearchController";
 
 
 /**
@@ -64,6 +65,7 @@ export class FrontControllerServletV5 {
         this.handlerMappingMap.set("/post/save", new PostSaveControllerV6());
         // this.handlerMappingMap.set("/post/save/random", new PostSaveRandomControllerV6()); //test용 라우터
         this.handlerMappingMap.set("/post/:id", new PostDetailControllerV6());
+        this.handlerMappingMap.set("/post/search", new PostSearchController());
 
         this.handlerMappingMap.set("/comment/save", new CommentSaveControllerV6());
 

@@ -19,18 +19,6 @@ export class GetAllPostControllerV6 implements ControllerV6{
 
         const start = performance.now();
 
-        // const data = await this.paginationService.paginate(
-        //     new BasePaginatePostDto(+req.query['page'], undefined,
-        //         undefined, 'DESC', 10),
-        //     this.postRepository,
-        //     {
-        //         relations:{
-        //             member: true,
-        //         }
-        //     },
-        //     'post',
-        // );
-
         const posts = await this.postRepository
             .createQueryBuilder("post")
             .leftJoinAndSelect("post.member", "member")

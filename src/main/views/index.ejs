@@ -117,12 +117,17 @@
         </div>
 
         <div class="nav-actions">
-            <div class="search-box">
-                <input type="text" placeholder="검색어를 입력하세요" class="search-input">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.5 15.5L20 20M10 17a7 7 0 100-14 7 7 0 000 14z"/>
-                </svg>
-            </div>
+            <form class="search-box" action="/post/search" method="GET">
+                <input
+                        type="text"
+                        placeholder="검색어를 입력하세요"
+                        class="search-input"
+                        id="title"
+                        name="title"
+                        required
+                >
+                <button type="submit" class="button submit">검색</button>
+            </form>
             <button onclick="location.href='/post/form'" class="action-button">
                 글쓰기
             </button>
