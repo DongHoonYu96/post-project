@@ -1,4 +1,8 @@
-## 📌 시작 전 확인 사항
+# 웹 게시판 프로젝트
+- 직접구현한 WAS를 사용한 백만개의 게시글을 관리하는 시스템 입니다.
+- 배포 : http://boodit.duckdns.org
+<br> ID/PW : admin / admin
+<br>(개인pc의 가상머신 리눅스에 배포 => 새벽2시~오전9시 이용불가..)
 
 ### ✔️ 실행 방법
 
@@ -12,7 +16,8 @@ $ npm start
 <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white"/>
 <img src="https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white"/>
 <img src="https://img.shields.io/badge/Nginx-009639?style=flat-square&logo=nginx&logoColor=white"/>
--  FE<br>
+
+- FE<br>
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white"/>
 <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white"/>
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black"/>
